@@ -26,8 +26,12 @@ def create_board():
     
     buttons = [[Button(row, column) for column in range(3)] for row in range(3)]  # Create a 3x3 grid of buttons
     
-    restart_button = ttk.Button(root, text="Restart")  # Create Restart Button
+    restart_button = ttk.Button(root, text="Restart", command=on_restart_button_click)  # Create Restart Button
     restart_button.grid(row=3, column=0, columnspan=3, pady=10)  # Place Restart Button in the grid
+
+def on_restart_button_click():
+    print("Restart button clicked")  # Print a message to the console when the Restart Button is clicked
+    reset_game()  # Call the reset_game function to reset the game when the Restart Button is clicked
 
 def on_button_click(row, column):
     global button_num
