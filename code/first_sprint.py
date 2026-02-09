@@ -16,11 +16,14 @@ def opponent_choice():
     opponent_window = tk.Toplevel(root)  # Create a new window for the opponents name input
     opponent_window.title("Choose opponent")  # Set the title
 
+    warning_text = ttk.Label(opponent_window, text="Please choose your opponent before playing:")  # Create a label with instructions
+    warning_text.pack(pady=5)  # Place the label in the window with some
+
     bot_button = ttk.Button(opponent_window, text="Player vs Bot")  # Create Bot Button
-    bot_button.pack(pady=10)  # Place Bot Button in the window
+    bot_button.pack(pady=5)  # Place Bot Button in the window
 
     player_button = ttk.Button(opponent_window, text="Player vs Player")  # Create Player Button
-    player_button.pack(pady=10)  # Place Player Button in the window
+    player_button.pack(pady=5)  # Place Player Button in the window
 
     # Position the Toplevel to the right of the root window
     toplevel_x = root_x + root_width
