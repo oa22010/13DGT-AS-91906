@@ -7,6 +7,10 @@ root = tk.Tk()
 root.title("Noughts and Crosses")  # Set the window title
 root.geometry("270x340")    # Set the window size
 
+def on_opponent_button_click(opponent_type, opponent_window):
+    print(f"Selected opponent: {opponent_type}")  # Print the selected opponent type to the console
+    opponent_window.destroy()  # Close the opponent selection window
+
 def opponent_choice():
     root.update_idletasks()  # Update the window to get accurate dimensions
     root_x = root.winfo_x()
@@ -19,10 +23,10 @@ def opponent_choice():
     warning_text = ttk.Label(opponent_window, text="Please choose your opponent before playing:")  # Create a label with instructions
     warning_text.pack(pady=5)  # Place the label in the window with some
 
-    bot_button = ttk.Button(opponent_window, text="Player vs Bot")  # Create Bot Button
+    bot_button = ttk.Button(opponent_window, text="Player vs Bot", command=lambda: on_opponent_button_click("Bot", opponent_window))  # Create Bot Button
     bot_button.pack(pady=5)  # Place Bot Button in the window
 
-    player_button = ttk.Button(opponent_window, text="Player vs Player")  # Create Player Button
+    player_button = ttk.Button(opponent_window, text="Player vs Player", command=lambda: on_opponent_button_click("Player", opponent_window))  # Create Player Button
     player_button.pack(pady=5)  # Place Player Button in the window
 
     # Position the Toplevel to the right of the root window
