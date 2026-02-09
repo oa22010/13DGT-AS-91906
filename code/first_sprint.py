@@ -39,6 +39,44 @@ def on_button_click(row, column):
         turn = "O"  # Set turn to "O" for even clicks
     if opponent == "Player":  # Check if the button is not already marked and the opponent is Player
         buttons[row][column]["text"] = turn  # Mark the button when clicked
+        win_check()  # Check for a win after the button is clicked
+
+def win_check():
+    if buttons[0][0]["text"] == buttons[0][1]["text"] == buttons[0][2]["text"] != "":
+        print(f"{buttons[0][0]['text']} wins!")  # Check for a win in the first row
+        reset_game()  # Reset the game after a win
+    elif buttons[1][0]["text"] == buttons[1][1]["text"] == buttons[1][2]["text"] != "":
+        print(f"{buttons[1][0]['text']} wins!")  # Check for a win in the second row
+        reset_game()  # Reset the game after a win
+    elif buttons[2][0]["text"] == buttons[2][1]["text"] == buttons[2][2]["text"] != "":
+        print(f"{buttons[2][0]['text']} wins!")  # Check for a win in the third row
+        reset_game()  # Reset the game after a win
+    elif buttons[0][0]["text"] == buttons[1][0]["text"] == buttons[2][0]["text"] != "":
+        print(f"{buttons[0][0]['text']} wins!")  # Check for a win in the first column
+        reset_game()  # Reset the game after a win
+    elif buttons[0][1]["text"] == buttons[1][1]["text"] == buttons[2][1]["text"] != "":
+        print(f"{buttons[0][1]['text']} wins!")  # Check for a win in the second column
+        reset_game()  # Reset the game after a win
+    elif buttons[0][2]["text"] == buttons[1][2]["text"] == buttons[2][2]["text"] != "":
+        print(f"{buttons[0][2]['text']} wins!")  # Check for a win in the third column
+        reset_game()  # Reset the game after a win
+    elif buttons[0][0]["text"] == buttons[1][1]["text"] == buttons[2][2]["text"] != "":
+        print(f"{buttons[0][0]['text']} wins!")  # Check for a win in the top-left to bottom-right diagonal
+        reset_game()  # Reset the game after a win
+    elif buttons[0][2]["text"] == buttons[1][1]["text"] == buttons[2][0]["text"] != "":
+        print(f"{buttons[0][2]['text']} wins!")  # Check for a win in the top-right to bottom-left diagonal
+        reset_game()  # Reset the game after a win
+    
+    if all(button["text"] != "" for row in buttons for button in row):
+        print("It's a draw!")  # Check for a draw if all buttons are marked
+        reset_game()  # Reset the game after a draw
+
+def reset_game():
+    global button_num
+    button_num = 0  # Reset the button click count
+    for row in buttons:
+        for button in row:
+            button["text"] = ""  # Clear the text on all buttons to reset the game
 
 # Function to handle opponent button clicks
 def on_opponent_button_click(opponent_type, bot_button, player_button, warning_label):
