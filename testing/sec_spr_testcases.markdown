@@ -1,5 +1,6 @@
+# Test cases for second sprint
 
-
+**Test Type:** Boundary  
 **Input:**  
 ""Function to handle button clicks on the game board""  
 def on_button_click(row, column):  
@@ -11,7 +12,7 @@ def on_button_click(row, column):
     else:  
         turn = "O"  # Set turn to "O" for even clicks  
 
-**Expected Outcome:** When button is clicked, it is marked and cannot b changed until game ends  
+**Expected Outcome:** When button is clicked, it is marked and cannot be changed until game ends  
 **Actual Result:** Button can be changed every click  
 **Pass or Fail:** Fail  
 **Debugging:** New condition added to check if button is already marked  
