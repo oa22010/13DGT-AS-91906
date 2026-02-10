@@ -6,14 +6,15 @@ from tkinter import ttk
 root = tk.Tk()
 root.title("Choose your opponent")  # Set the window title
 
+# Initialize a global variable to count button clicks
 global button_num
-button_num = 0  # Initialize a global variable to count button clicks
+button_num = 0
 
 # Function to destroy the opponent choice widgets
-def destroy_opponent_choice_widgets(bot_button, player_button, label):
-    bot_button.destroy()  # Destroy the Bot Button
-    player_button.destroy()  # Destroy the Player Button
-    label.destroy()  # Destroy the instruction label
+def destroy_opponent_choice_widgets(widget_1, widget_2, widget_3):
+    widget_1.destroy()  # Destroy the first widget
+    widget_2.destroy()  # Destroy the second widget
+    widget_3.destroy()  # Destroy the third widget
 
 # Create the noughts and crosses board
 def create_board():
@@ -29,10 +30,12 @@ def create_board():
     restart_button = ttk.Button(root, text="Restart", command=on_restart_button_click)  # Create Restart Button
     restart_button.grid(row=3, column=0, columnspan=3, pady=10)  # Place Restart Button in the grid
 
+# Function to handle Restart Button clicks
 def on_restart_button_click():
-    print("Restart button clicked")  # Print a message to the console when the Restart Button is clicked
+    print("Restart button clicked")# Print a message to the console when the Restart Button is clicked
     reset_game()  # Call the reset_game function to reset the game when the Restart Button is clicked
 
+# Function to handle button clicks on the game board
 def on_button_click(row, column):
     global button_num
     button_num += 1  # Increment the button click count
@@ -45,31 +48,64 @@ def on_button_click(row, column):
         buttons[row][column]["text"] = turn  # Mark the button when clicked
         win_check()  # Check for a win after the button is clicked
 
+# Function to check for a win or a draw
 def win_check():
     if buttons[0][0]["text"] == buttons[0][1]["text"] == buttons[0][2]["text"] != "":
         print(f"{buttons[0][0]['text']} wins!")  # Check for a win in the first row
         reset_game()  # Reset the game after a win
+        # Change the background color of the winning buttons
+        buttons[0][0]["bg"] = "lightgreen"
+        buttons[0][1]["bg"] = "lightgreen"
+        buttons[0][2]["bg"] = "lightgreen"
     elif buttons[1][0]["text"] == buttons[1][1]["text"] == buttons[1][2]["text"] != "":
         print(f"{buttons[1][0]['text']} wins!")  # Check for a win in the second row
         reset_game()  # Reset the game after a win
+        # Change the background color of the winning buttons
+        buttons[1][0]["bg"] = "lightgreen"
+        buttons[1][1]["bg"] = "lightgreen"
+        buttons[1][2]["bg"] = "lightgreen"
     elif buttons[2][0]["text"] == buttons[2][1]["text"] == buttons[2][2]["text"] != "":
         print(f"{buttons[2][0]['text']} wins!")  # Check for a win in the third row
         reset_game()  # Reset the game after a win
+        # Change the background color of the winning buttons
+        buttons[2][0]["bg"] = "lightgreen"
+        buttons[2][1]["bg"] = "lightgreen"
+        buttons[2][2]["bg"] = "lightgreen"
     elif buttons[0][0]["text"] == buttons[1][0]["text"] == buttons[2][0]["text"] != "":
         print(f"{buttons[0][0]['text']} wins!")  # Check for a win in the first column
         reset_game()  # Reset the game after a win
+        # Change the background color of the winning buttons
+        buttons[0][0]["bg"] = "lightgreen"
+        buttons[1][0]["bg"] = "lightgreen"
+        buttons[2][0]["bg"] = "lightgreen"
     elif buttons[0][1]["text"] == buttons[1][1]["text"] == buttons[2][1]["text"] != "":
         print(f"{buttons[0][1]['text']} wins!")  # Check for a win in the second column
         reset_game()  # Reset the game after a win
+         # Change the background color of the winning buttons
+        buttons[0][1]["bg"] = "lightgreen"
+        buttons[1][1]["bg"] = "lightgreen"
+        buttons[2][1]["bg"] = "lightgreen"
     elif buttons[0][2]["text"] == buttons[1][2]["text"] == buttons[2][2]["text"] != "":
         print(f"{buttons[0][2]['text']} wins!")  # Check for a win in the third column
         reset_game()  # Reset the game after a win
+        # Change the background color of the winning buttons
+        buttons[0][2]["bg"] = "lightgreen"
+        buttons[1][2]["bg"] = "lightgreen"
+        buttons[2][2]["bg"] = "lightgreen"
     elif buttons[0][0]["text"] == buttons[1][1]["text"] == buttons[2][2]["text"] != "":
         print(f"{buttons[0][0]['text']} wins!")  # Check for a win in the top-left to bottom-right diagonal
         reset_game()  # Reset the game after a win
+        # Change the background color of the winning buttons
+        buttons[0][0]["bg"] = "lightgreen"
+        buttons[1][1]["bg"] = "lightgreen"
+        buttons[2][2]["bg"] = "lightgreen"
     elif buttons[0][2]["text"] == buttons[1][1]["text"] == buttons[2][0]["text"] != "":
         print(f"{buttons[0][2]['text']} wins!")  # Check for a win in the top-right to bottom-left diagonal
         reset_game()  # Reset the game after a win
+        # Change the background color of the winning buttons
+        buttons[0][2]["bg"] = "lightgreen"
+        buttons[1][1]["bg"] = "lightgreen"
+        buttons[2][0]["bg"] = "lightgreen"
     
     if all(button["text"] != "" for row in buttons for button in row):
         print("It's a draw!")  # Check for a draw if all buttons are marked
@@ -81,6 +117,7 @@ def reset_game():
     for row in buttons:
         for button in row:
             button["text"] = ""  # Clear the text on all buttons to reset the game
+            root.after(1000, lambda b=button: b.config(bg="SystemButtonFace"))  # Reset the background color of the buttons after a short delay
 
 # Function to handle opponent button clicks
 def on_opponent_button_click(opponent_type, bot_button, player_button, warning_label):
