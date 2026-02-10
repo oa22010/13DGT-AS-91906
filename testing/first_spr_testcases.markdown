@@ -1,5 +1,6 @@
 # Test cases for first sprint
 
+**Test Type:** Expected  
 **Input:**  
 def opponent_choice():  
 root.update_idletasks()  # Update the window to get accurate dimensions  
@@ -33,6 +34,7 @@ def __init__(self, row, column):
 super().__init__(root, text="", width=10, height=5)  # Initialize the button  
 self.grid(row=row, column=column, padx=5, pady=5)  # Place the button in the grid
 
+**Test Type:** Expected  
 **Input:**  
 global button_num  
 button_num = 0  # Initialize a global variable to count button clicks
@@ -62,6 +64,7 @@ if opponent_type == "Bot":
 **Actual Result:** When a button is clicked, text turns into either X or O depending on whose turn it is  
 **Pass or Fail:** Pass  
 
+**Test Type:** Expected  
 **Input:**  
 def on_restart_button_click():  
     print("Restart button clicked")  # Print a message to the console when the Restart Button is clicked  
