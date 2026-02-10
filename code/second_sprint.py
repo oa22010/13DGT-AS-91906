@@ -11,6 +11,7 @@ root.title("Choose your opponent")  # Set the window title
 global button_num
 global x_score, o_score, draws_score
 global win_combinations
+# Initialize the list to store winning combinations
 win_combinations = [
         [(0, 0), (0, 1), (0, 2)],  # First row
         [(1, 0), (1, 1), (1, 2)],  # Second row
@@ -19,7 +20,7 @@ win_combinations = [
         [(0, 1), (1, 1), (2, 1)],  # Second column
         [(0, 2), (1, 2), (2, 2)],  # Third column
         [(0, 0), (1, 1), (2, 2)],  # Top-left to bottom-right diagonal
-        [(0, 2), (1, 1), (2, 0)]   ]  # Top-right to bottom-left diagonal  # Initialize the list to store winning combinations
+        [(0, 2), (1, 1), (2, 0)]   ]  # Top-right to bottom-left diagonal
 x_score = 0  # Initialize Player X's score
 o_score = 0  # Initialize Player O's score
 draws_score = 0  # Initialize the draw score
