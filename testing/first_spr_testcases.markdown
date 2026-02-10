@@ -69,11 +69,4 @@ def on_restart_button_click():
 
 **Expected Outcome:** When button is clicked game resets  
 **Actual Result:** When button is clicked game resets  
-**Pass or Fail:** Pass  
-
-(Structure)
-**Input:**  
-**Expected Outcome:**  
-**Actual Result:**  
-**Pass or Fail:**  
-**Debugging (Only present if necessary)** 
+**Pass or Fail:** Pass
