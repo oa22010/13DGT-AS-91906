@@ -14,11 +14,6 @@ o_score = 0  # Initialize Player O's score
 draws_score = 0  # Initialize the draw score
 button_num = 0
 
-# Function to destroy the opponent choice widgets
-def destroy_opponent_choice_widgets(widgets):
-    for widget in widgets:
-        widget.destroy()  # Destroy each widget in the list
-
 # Create the noughts and crosses board
 def create_board():
     global buttons, restart_button
@@ -35,6 +30,11 @@ def create_board():
 
     score_check("")  # Initialize the score display
 
+# Function to destroy the opponent choice widgets
+def destroy_opponent_choice_widgets(widgets):
+    for widget in widgets:
+        widget.destroy()  # Destroy each widget in the list
+
 # Function to handle Restart Button clicks
 def on_restart_button_click():
     print("Restart button clicked")# Print a message to the console when the Restart Button is clicked
@@ -46,82 +46,6 @@ def on_restart_button_click():
     o_score = 0
     draws_score = 0
     score_check("")  # Update the score display after resetting the scores
-
-# Function to handle button clicks on the game board
-def on_button_click(row, column):
-    global button_num
-    button_num += 1  # Increment the button click count
-    print(f"Button clicked at row {row}, column {column}")  # Print the button click coordinates to the console
-    if buttons[row][column]["text"] == "":  # Check if the button is not already marked    
-        if button_num % 2:
-            turn = "X"  # Set turn to "X" for odd clicks
-        else:
-            turn = "O"  # Set turn to "O" for even clicks
-    else:
-        print("Button already marked.")  # Print a message to the console if the button is already marked
-        return  # Exit the function if the button is already marked
-    if opponent == "Player":  # Check if the button is not already marked and the opponent is Player
-        buttons[row][column]["text"] = turn  # Mark the button when clicked
-        win_check()  # Check for a win after the button is clicked
-
-# Function to check for a win or a draw
-def win_check():
-    win_combinations = [
-        [(0, 0), (0, 1), (0, 2)],  # First row
-        [(1, 0), (1, 1), (1, 2)],  # Second row
-        [(2, 0), (2, 1), (2, 2)],  # Third row
-        [(0, 0), (1, 0), (2, 0)],  # First column
-        [(0, 1), (1, 1), (2, 1)],  # Second column
-        [(0, 2), (1, 2), (2, 2)],  # Third column
-        [(0, 0), (1, 1), (2, 2)],  # Top-left to bottom-right diagonal
-        [(0, 2), (1, 1), (2, 0)]   ]  # Top-right to bottom-left diagonal
-    
-    for combination in win_combinations:
-        if buttons[combination[0][0]][combination[0][1]]["text"] == buttons[combination[1][0]][combination[1][1]]["text"] == buttons[combination[2][0]][combination[2][1]]["text"] != "":
-            winner = buttons[combination[0][0]][combination[0][1]]["text"]  # Get the winner's symbol
-            score_check(winner)  # Update the scores based on the winner
-            reset_game(winner)  # Reset the game after a win
-            return  # Exit the function after a win is detected
-
-    if all(button["text"] != "" for row in buttons for button in row):
-        print("It's a draw!")  # Check for a draw if all buttons are marked
-        reset_game("Draw")  # Reset the game after a draw
-
-def score_check(result):
-    global x_score, o_score, draws_score
-
-    x_wins = tk.Label(root, text=f"X wins: {x_score}")  # Create a label to display Player X's wins
-    x_wins.grid(row=4, column=0)  # Place the label in the grid
-
-    o_wins = tk.Label(root, text=f"O wins: {o_score}")  # Create a label to display Player O's wins
-    o_wins.grid(row=4, column=1)  # Place the label in the grid
-
-    draws = tk.Label(root, text=f"Draws: {draws_score}")  # Create a label to display the number of draws
-    draws.grid(row=4, column=2)  # Place the label in the grid
-    
-    if result == "X":
-        print("Player X wins!")  # Print a message to the console when Player X wins
-        x_score += 1  # Increment Player X's score
-        x_wins.config(text=f"X wins: {x_score}")  # Update the X wins label
-    elif result == "O":
-        print("Player O wins!")  # Print a message to the console when Player O wins
-        o_score += 1  # Increment Player O's score
-        o_wins.config(text=f"O wins: {o_score}")  # Update the O wins label
-    elif result == "Draw":
-        print("It's a draw!")  # Print a message to the console when the game is a draw
-        draws_score += 1  # Increment the draw score
-        draws.config(text=f"Draws: {draws_score}")  # Update the Draws label
-    else:
-        print("Game reset")  # Print a message to the console when the game is reset without a win or draw
-
-def reset_game(result):
-    global button_num
-    button_num = 0  # Reset the button click count
-    score_check(result)  # Update the scores based on the result of the game
-    for row in buttons:
-        for button in row:
-            button["text"] = ""  # Clear the text on all buttons to reset the game
-            root.after(1000, lambda b=button: b.config(bg="SystemButtonFace"))  # Reset the background color of the buttons after a short delay
 
 # Function to handle opponent button clicks
 def on_opponent_button_click(opponent_type, widgets):
@@ -151,6 +75,85 @@ def opponent_choice():
 
     player_button = ttk.Button(root, text="Player vs Player", command=lambda: on_opponent_button_click("Player", [bot_button, player_button, warning_text]))  # Create Player Button
     player_button.pack(pady=5)  # Place Player Button in the window
+
+# Function to handle button clicks on the game board
+def on_button_click(row, column):
+    global button_num
+    button_num += 1  # Increment the button click count
+    print(f"Button clicked at row {row}, column {column}")  # Print the button click coordinates to the console
+    if buttons[row][column]["text"] == "":  # Check if the button is not already marked    
+        if button_num % 2:
+            turn = "X"  # Set turn to "X" for odd clicks
+        else:
+            turn = "O"  # Set turn to "O" for even clicks
+    else:
+        print("Button already marked.")  # Print a message to the console if the button is already marked
+        return  # Exit the function if the button is already marked
+    if opponent == "Player":  # Check if the button is not already marked and the opponent is Player
+        buttons[row][column]["text"] = turn  # Mark the button when clicked
+        win_check()  # Check for a win after the button is clicked
+
+def reset_game(result):
+    global button_num
+    button_num = 0  # Reset the button click count
+    score_check(result)  # Update the scores based on the result of the game
+    for row in buttons:
+        for button in row:
+            button["text"] = ""  # Clear the text on all buttons to reset the game
+            root.after(1000, lambda b=button: b.config(bg="SystemButtonFace"))  # Reset the background color of the buttons after a short delay
+
+def score_check(result):
+    global x_score, o_score, draws_score
+
+    x_wins = tk.Label(root, text=f"X wins: {x_score}")  # Create a label to display Player X's wins
+    x_wins.grid(row=4, column=0)  # Place the label in the grid
+
+    o_wins = tk.Label(root, text=f"O wins: {o_score}")  # Create a label to display Player O's wins
+    o_wins.grid(row=4, column=1)  # Place the label in the grid
+
+    draws = tk.Label(root, text=f"Draws: {draws_score}")  # Create a label to display the number of draws
+    draws.grid(row=4, column=2)  # Place the label in the grid
+    
+    if result == "X":
+        print("Player X wins!")  # Print a message to the console when Player X wins
+        x_score += 1  # Increment Player X's score
+        x_wins.config(text=f"X wins: {x_score}")  # Update the X wins label
+    elif result == "O":
+        print("Player O wins!")  # Print a message to the console when Player O wins
+        o_score += 1  # Increment Player O's score
+        o_wins.config(text=f"O wins: {o_score}")  # Update the O wins label
+    elif result == "Draw":
+        print("It's a draw!")  # Print a message to the console when the game is a draw
+        draws_score += 1  # Increment the draw score
+        draws.config(text=f"Draws: {draws_score}")  # Update the Draws label
+    else:
+        print("Game reset")  # Print a message to the console when the game is reset without a win or draw
+
+# Function to check for a win or a draw
+def win_check():
+    win_combinations = [
+        [(0, 0), (0, 1), (0, 2)],  # First row
+        [(1, 0), (1, 1), (1, 2)],  # Second row
+        [(2, 0), (2, 1), (2, 2)],  # Third row
+        [(0, 0), (1, 0), (2, 0)],  # First column
+        [(0, 1), (1, 1), (2, 1)],  # Second column
+        [(0, 2), (1, 2), (2, 2)],  # Third column
+        [(0, 0), (1, 1), (2, 2)],  # Top-left to bottom-right diagonal
+        [(0, 2), (1, 1), (2, 0)]   ]  # Top-right to bottom-left diagonal
+    
+    for combination in win_combinations:
+        if buttons[combination[0][0]][combination[0][1]]["text"] == buttons[combination[1][0]][combination[1][1]]["text"] == buttons[combination[2][0]][combination[2][1]]["text"] != "":
+            winner = buttons[combination[0][0]][combination[0][1]]["text"]  # Get the winner's symbol
+            buttons[combination[0][0]][combination[0][1]].config(bg="lightgreen")  # Highlight the winning combination
+            buttons[combination[1][0]][combination[1][1]].config(bg="lightgreen")  # Highlight the winning combination
+            buttons[combination[2][0]][combination[2][1]].config(bg="lightgreen")  # Highlight the winning combination
+            score_check(winner)  # Update the scores based on the winner
+            reset_game(winner)  # Reset the game after a win
+            return  # Exit the function after a win is detected
+
+    if all(button["text"] != "" for row in buttons for button in row):
+        print("It's a draw!")  # Check for a draw if all buttons are marked
+        reset_game("Draw")  # Reset the game after a draw
 
 opponent_choice()  # Call the function to display the opponent choice window
 
