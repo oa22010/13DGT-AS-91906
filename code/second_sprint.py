@@ -1,5 +1,6 @@
 # Import necessary modules
 import tkinter as tk
+import random
 from tkinter import ttk
 
 # Initialize the main application window
@@ -9,10 +10,36 @@ root.title("Choose your opponent")  # Set the window title
 # Initialize a global variable to count button clicks
 global button_num
 global x_score, o_score, draws_score
+global win_combinations
+win_combinations = [
+        [(0, 0), (0, 1), (0, 2)],  # First row
+        [(1, 0), (1, 1), (1, 2)],  # Second row
+        [(2, 0), (2, 1), (2, 2)],  # Third row
+        [(0, 0), (1, 0), (2, 0)],  # First column
+        [(0, 1), (1, 1), (2, 1)],  # Second column
+        [(0, 2), (1, 2), (2, 2)],  # Third column
+        [(0, 0), (1, 1), (2, 2)],  # Top-left to bottom-right diagonal
+        [(0, 2), (1, 1), (2, 0)]   ]  # Top-right to bottom-left diagonal  # Initialize the list to store winning combinations
 x_score = 0  # Initialize Player X's score
 o_score = 0  # Initialize Player O's score
 draws_score = 0  # Initialize the draw score
 button_num = 0
+
+def bot_move():
+    empty_buttons = [(r, c) for r in range(3) for c in range(3) if buttons[r][c]["text"] == ""]  # Get a list of empty buttons
+    if empty_buttons:  # Check if there are any empty buttons left
+        global win_combinations
+        if empty_buttons == win_combinations:  # Check if the bot can win in the next move/basic blocking strategy
+            row, column = random.choice(empty_buttons)  # Randomly select an empty button
+            buttons[row][column]["text"] = "O"  # Mark the selected button with "O"
+            global button_num
+            button_num += 1  # Increment the button click count after the bot's move
+            win_check()  # Check for a win after the bot's move
+        else:
+            row, column = random.choice(empty_buttons)  # Randomly select an empty button
+            buttons[row][column]["text"] = "O"  # Mark the selected button with "O"
+            button_num += 1  # Increment the button click count after the bot's move
+            win_check()  # Check for a win after the bot's move
 
 # Create the noughts and crosses board
 def create_board():
@@ -81,22 +108,20 @@ def on_button_click(row, column):
     global button_num
     button_num += 1  # Increment the button click count
     print(f"Button clicked at row {row}, column {column}")  # Print the button click coordinates to the console
-    if buttons[row][column]["text"] == "":  # Check if the button is not already marked    
-        if button_num % 2:
-            turn = "X"  # Set turn to "X" for odd clicks
-        else:
-            turn = "O"  # Set turn to "O" for even clicks
-    else:
-        print("Button already marked.")  # Print a message to the console if the button is already marked
-        return  # Exit the function if the button is already marked
-    if opponent == "Player":  # Check if the button is not already marked and the opponent is Player
-        buttons[row][column]["text"] = turn  # Mark the button when clicked
-        win_check()  # Check for a win after the button is clicked
+    if opponent == "Bot" and button_num % 2 == 1:  # Check if the opponent is Bot and it's the player's turn
+        if buttons[row][column]["text"] == "":  # Check if the button is empty
+            buttons[row][column]["text"] = "X"  # Mark the button with "X"
+            bot_move()  # Make the bot's move after the player's move
+    elif opponent == "Player":  # Check if the button is not already marked and the opponent is Player:
+        if buttons[row][column]["text"] == "" and button_num % 2 == 1:  # Check if the button is empty and it's Player X's turn
+            buttons[row][column]["text"] = "X"  # Mark the button with "X"
+        elif buttons[row][column]["text"] == "" and button_num % 2 == 0:  # Check if the button is empty and it's Player O's turn
+            buttons[row][column]["text"] = "O"  # Mark the button with "O"
+    win_check()  # Check for a win after the player's move
 
 def reset_game(result):
     global button_num
     button_num = 0  # Reset the button click count
-    score_check(result)  # Update the scores based on the result of the game
     for row in buttons:
         for button in row:
             button["text"] = ""  # Clear the text on all buttons to reset the game
@@ -115,15 +140,12 @@ def score_check(result):
     draws.grid(row=4, column=2)  # Place the label in the grid
     
     if result == "X":
-        print("Player X wins!")  # Print a message to the console when Player X wins
         x_score += 1  # Increment Player X's score
         x_wins.config(text=f"X wins: {x_score}")  # Update the X wins label
     elif result == "O":
-        print("Player O wins!")  # Print a message to the console when Player O wins
         o_score += 1  # Increment Player O's score
         o_wins.config(text=f"O wins: {o_score}")  # Update the O wins label
     elif result == "Draw":
-        print("It's a draw!")  # Print a message to the console when the game is a draw
         draws_score += 1  # Increment the draw score
         draws.config(text=f"Draws: {draws_score}")  # Update the Draws label
     else:
@@ -131,16 +153,7 @@ def score_check(result):
 
 # Function to check for a win or a draw
 def win_check():
-    win_combinations = [
-        [(0, 0), (0, 1), (0, 2)],  # First row
-        [(1, 0), (1, 1), (1, 2)],  # Second row
-        [(2, 0), (2, 1), (2, 2)],  # Third row
-        [(0, 0), (1, 0), (2, 0)],  # First column
-        [(0, 1), (1, 1), (2, 1)],  # Second column
-        [(0, 2), (1, 2), (2, 2)],  # Third column
-        [(0, 0), (1, 1), (2, 2)],  # Top-left to bottom-right diagonal
-        [(0, 2), (1, 1), (2, 0)]   ]  # Top-right to bottom-left diagonal
-    
+    global win_combinations
     for combination in win_combinations:
         if buttons[combination[0][0]][combination[0][1]]["text"] == buttons[combination[1][0]][combination[1][1]]["text"] == buttons[combination[2][0]][combination[2][1]]["text"] != "":
             winner = buttons[combination[0][0]][combination[0][1]]["text"]  # Get the winner's symbol
@@ -150,10 +163,10 @@ def win_check():
             score_check(winner)  # Update the scores based on the winner
             reset_game(winner)  # Reset the game after a win
             return  # Exit the function after a win is detected
-
-    if all(button["text"] != "" for row in buttons for button in row):
-        print("It's a draw!")  # Check for a draw if all buttons are marked
-        reset_game("Draw")  # Reset the game after a draw
+        elif all(button["text"] != "" for row in buttons for button in row):
+            reset_game("Draw")  # Reset the game after a draw
+        else:
+            pass
 
 opponent_choice()  # Call the function to display the opponent choice window
 
