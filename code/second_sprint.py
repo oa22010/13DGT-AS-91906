@@ -15,10 +15,9 @@ draws_score = 0  # Initialize the draw score
 button_num = 0
 
 # Function to destroy the opponent choice widgets
-def destroy_opponent_choice_widgets(widget_1, widget_2, widget_3):
-    widget_1.destroy()  # Destroy the first widget
-    widget_2.destroy()  # Destroy the second widget
-    widget_3.destroy()  # Destroy the third widget
+def destroy_opponent_choice_widgets(widgets):
+    for widget in widgets:
+        widget.destroy()  # Destroy each widget in the list
 
 # Create the noughts and crosses board
 def create_board():
@@ -67,87 +66,23 @@ def on_button_click(row, column):
 
 # Function to check for a win or a draw
 def win_check():
-    if buttons[0][0]["text"] == buttons[0][1]["text"] == buttons[0][2]["text"] != "":
-        print(f"{buttons[0][0]['text']} wins!")  # Check for a win in the first row
-        if buttons[0][0]["text"] == "X":    
-            reset_game("X")  # Reset the game after a win\
-        else:
-            reset_game("O")  # Reset the game after a win
-        # Change the background color of the winning buttons
-        buttons[0][0]["bg"] = "lightgreen"
-        buttons[0][1]["bg"] = "lightgreen"
-        buttons[0][2]["bg"] = "lightgreen"
-    elif buttons[1][0]["text"] == buttons[1][1]["text"] == buttons[1][2]["text"] != "":
-        print(f"{buttons[1][0]['text']} wins!")  # Check for a win in the second row
-        if buttons[1][0]["text"] == "X":    
-            reset_game("X")  # Reset the game after a win
-        else:
-            reset_game("O")  # Reset the game after a win
-        # Change the background color of the winning buttons
-        buttons[1][0]["bg"] = "lightgreen"
-        buttons[1][1]["bg"] = "lightgreen"
-        buttons[1][2]["bg"] = "lightgreen"
-    elif buttons[2][0]["text"] == buttons[2][1]["text"] == buttons[2][2]["text"] != "":
-        print(f"{buttons[2][0]['text']} wins!")  # Check for a win in the third row
-        if buttons[2][0]["text"] == "X":
-            reset_game("X")  # Reset the game after a win
-        else:
-            reset_game("O")  # Reset the game after a win
-        # Change the background color of the winning buttons
-        buttons[2][0]["bg"] = "lightgreen"
-        buttons[2][1]["bg"] = "lightgreen"
-        buttons[2][2]["bg"] = "lightgreen"
-    elif buttons[0][0]["text"] == buttons[1][0]["text"] == buttons[2][0]["text"] != "":
-        print(f"{buttons[0][0]['text']} wins!")  # Check for a win in the first column
-        if buttons[0][0]["text"] == "X":    
-            reset_game("X")  # Reset the game after a win
-        else:
-            reset_game("O")  # Reset the game after a win
-        # Change the background color of the winning buttons
-        buttons[0][0]["bg"] = "lightgreen"
-        buttons[1][0]["bg"] = "lightgreen"
-        buttons[2][0]["bg"] = "lightgreen"
-    elif buttons[0][1]["text"] == buttons[1][1]["text"] == buttons[2][1]["text"] != "":
-        print(f"{buttons[0][1]['text']} wins!")  # Check for a win in the second column
-        if buttons[0][1]["text"] == "X":    
-            reset_game("X")  # Reset the game after a win
-        else:
-            reset_game("O")  # Reset the game after a win
-         # Change the background color of the winning buttons
-        buttons[0][1]["bg"] = "lightgreen"
-        buttons[1][1]["bg"] = "lightgreen"
-        buttons[2][1]["bg"] = "lightgreen"
-    elif buttons[0][2]["text"] == buttons[1][2]["text"] == buttons[2][2]["text"] != "":
-        print(f"{buttons[0][2]['text']} wins!")  # Check for a win in the third column
-        if buttons[0][2]["text"] == "X":    
-            reset_game("X")  # Reset the game after a win
-        else:
-            reset_game("O")  # Reset the game after a win
-        # Change the background color of the winning buttons
-        buttons[0][2]["bg"] = "lightgreen"
-        buttons[1][2]["bg"] = "lightgreen"
-        buttons[2][2]["bg"] = "lightgreen"
-    elif buttons[0][0]["text"] == buttons[1][1]["text"] == buttons[2][2]["text"] != "":
-        print(f"{buttons[0][0]['text']} wins!")  # Check for a win in the top-left to bottom-right diagonal
-        if buttons[0][0]["text"] == "X":    
-            reset_game("X")  # Reset the game after a win
-        else:
-            reset_game("O")  # Reset the game after a win
-        # Change the background color of the winning buttons
-        buttons[0][0]["bg"] = "lightgreen"
-        buttons[1][1]["bg"] = "lightgreen"
-        buttons[2][2]["bg"] = "lightgreen"
-    elif buttons[0][2]["text"] == buttons[1][1]["text"] == buttons[2][0]["text"] != "":
-        print(f"{buttons[0][2]['text']} wins!")  # Check for a win in the top-right to bottom-left diagonal
-        if buttons[0][2]["text"] == "X":    
-            reset_game("X")  # Reset the game after a win
-        else:
-            reset_game("O")  # Reset the game after a win
-        # Change the background color of the winning buttons
-        buttons[0][2]["bg"] = "lightgreen"
-        buttons[1][1]["bg"] = "lightgreen"
-        buttons[2][0]["bg"] = "lightgreen"
+    win_combinations = [
+        [(0, 0), (0, 1), (0, 2)],  # First row
+        [(1, 0), (1, 1), (1, 2)],  # Second row
+        [(2, 0), (2, 1), (2, 2)],  # Third row
+        [(0, 0), (1, 0), (2, 0)],  # First column
+        [(0, 1), (1, 1), (2, 1)],  # Second column
+        [(0, 2), (1, 2), (2, 2)],  # Third column
+        [(0, 0), (1, 1), (2, 2)],  # Top-left to bottom-right diagonal
+        [(0, 2), (1, 1), (2, 0)]   ]  # Top-right to bottom-left diagonal
     
+    for combination in win_combinations:
+        if buttons[combination[0][0]][combination[0][1]]["text"] == buttons[combination[1][0]][combination[1][1]]["text"] == buttons[combination[2][0]][combination[2][1]]["text"] != "":
+            winner = buttons[combination[0][0]][combination[0][1]]["text"]  # Get the winner's symbol
+            score_check(winner)  # Update the scores based on the winner
+            reset_game(winner)  # Reset the game after a win
+            return  # Exit the function after a win is detected
+
     if all(button["text"] != "" for row in buttons for button in row):
         print("It's a draw!")  # Check for a draw if all buttons are marked
         reset_game("Draw")  # Reset the game after a draw
@@ -189,7 +124,7 @@ def reset_game(result):
             root.after(1000, lambda b=button: b.config(bg="SystemButtonFace"))  # Reset the background color of the buttons after a short delay
 
 # Function to handle opponent button clicks
-def on_opponent_button_click(opponent_type, bot_button, player_button, warning_label):
+def on_opponent_button_click(opponent_type, widgets):
     print(f"Selected opponent: {opponent_type}")  # Print the selected opponent type to the console
     
     if opponent_type == "Bot":
@@ -201,7 +136,7 @@ def on_opponent_button_click(opponent_type, bot_button, player_button, warning_l
     root.title("Noughts and Crosses")  # Set the window title
     root.geometry("270x370") # Set the window size to dimensions needed for the game interface
     
-    destroy_opponent_choice_widgets(bot_button, player_button, warning_label)  # Destroy the opponent choice buttons
+    destroy_opponent_choice_widgets(widgets)  # Destroy the opponent choice buttons
     create_board()  # Create the game board
 
 # Function to display the opponent choice interface
@@ -211,10 +146,10 @@ def opponent_choice():
     warning_text = ttk.Label(root, text="Please choose your opponent before playing:")  # Create a label with instructions
     warning_text.pack(pady=5)  # Place the label in the window with some
 
-    bot_button = ttk.Button(root, text="Player vs Bot", command=lambda: on_opponent_button_click("Bot", bot_button, player_button, warning_text))  # Create Bot Button
+    bot_button = ttk.Button(root, text="Player vs Bot", command=lambda: on_opponent_button_click("Bot", [bot_button, player_button, warning_text]))  # Create Bot Button
     bot_button.pack(pady=5)  # Place Bot Button in the window
 
-    player_button = ttk.Button(root, text="Player vs Player", command=lambda: on_opponent_button_click("Player", bot_button, player_button, warning_text))  # Create Player Button
+    player_button = ttk.Button(root, text="Player vs Player", command=lambda: on_opponent_button_click("Player", [bot_button, player_button, warning_text]))  # Create Player Button
     player_button.pack(pady=5)  # Place Player Button in the window
 
 opponent_choice()  # Call the function to display the opponent choice window
