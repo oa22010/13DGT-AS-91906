@@ -20,7 +20,8 @@ win_combinations = [
         [(0, 1), (1, 1), (2, 1)],  # Second column
         [(0, 2), (1, 2), (2, 2)],  # Third column
         [(0, 0), (1, 1), (2, 2)],  # Top-left to bottom-right diagonal
-        [(0, 2), (1, 1), (2, 0)]   ]  # Top-right to bottom-left diagonal
+        [(0, 2), (1, 1), (2, 0)]   # Top-right to bottom-left diagonal
+        ]
 x_score = 0  # Initialize Player X's score
 o_score = 0  # Initialize Player O's score
 draws_score = 0  # Initialize the draw score
@@ -35,12 +36,11 @@ def bot_move():
             buttons[row][column]["text"] = "O"  # Mark the selected button with "O"
             global button_num
             button_num += 1  # Increment the button click count after the bot's move
-            win_check()  # Check for a win after the bot's move
         else:
             row, column = random.choice(empty_buttons)  # Randomly select an empty button
             buttons[row][column]["text"] = "O"  # Mark the selected button with "O"
             button_num += 1  # Increment the button click count after the bot's move
-            win_check()  # Check for a win after the bot's move
+        win_check()  # Check for a win after the bot's move
 
 # Create the noughts and crosses board
 def create_board():
