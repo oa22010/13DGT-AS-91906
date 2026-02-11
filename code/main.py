@@ -6,6 +6,7 @@ from tkinter import ttk
 # Initialize the main application window
 root = tk.Tk()
 root.title("Choose your opponent")  # Set the window title
+root.resizable(False, False)  # Disable window resizing
 
 # Initialize a global variable to count button clicks
 global button_num
@@ -111,13 +112,18 @@ def on_button_click(row, column):
     print(f"Button clicked at row {row}, column {column}")  # Print the button click coordinates to the console
     if opponent == "Bot" and button_num % 2 == 1:  # Check if the opponent is Bot and it's the player's turn
         if buttons[row][column]["text"] == "":  # Check if the button is empty
+            buttons[row][column]["state"] = "disabled"  # Disable the button after it's marked
             buttons[row][column]["text"] = "X"  # Mark the button with "X"
             bot_move()  # Make the bot's move after the player's move
     elif opponent == "Player":  # Check if the button is not already marked and the opponent is Player:
         if buttons[row][column]["text"] == "" and button_num % 2 == 1:  # Check if the button is empty and it's Player X's turn
+            buttons[row][column]["state"] = "disabled"  # Disable the button after it's marked
             buttons[row][column]["text"] = "X"  # Mark the button with "X"
         elif buttons[row][column]["text"] == "" and button_num % 2 == 0:  # Check if the button is empty and it's Player O's turn
+            buttons[row][column]["state"] = "disabled"  # Disable the button after it's marked
             buttons[row][column]["text"] = "O"  # Mark the button with "O"
+    if buttons[row][column]["text"] != "":  # Check if the button is not empty after the player's move
+        buttons[row][column]["state"] = "disabled"  # Disable the button after it's marked
     win_check()  # Check for a win after the player's move
 
 def reset_game(result):
@@ -126,6 +132,7 @@ def reset_game(result):
     for row in buttons:
         for button in row:
             button["text"] = ""  # Clear the text on all buttons to reset the game
+            button["state"] = "normal"  # Enable all buttons to reset the game
             root.after(1000, lambda b=button: b.config(bg="SystemButtonFace"))  # Reset the background color of the buttons after a short delay
 
 def score_check(result):
