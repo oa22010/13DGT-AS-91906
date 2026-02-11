@@ -29,3 +29,49 @@ def on_button_click(row, column):
     else:  
         print("Button already marked.")  # Print a message to the console if the button is already marked
         return  # Exit the function if the button is already marked  
+
+**Test Type:** Expected  
+**Input:**  
+    # Change the background color of the winning buttons
+    buttons[0][0]["bg"] = "lightgreen"
+    buttons[0][1]["bg"] = "lightgreen"
+    buttons[0][2]["bg"] = "lightgreen"
+
+**Expected Outcome:** Winning buttons background turns green  
+**Actual Result:** Winning buttons background turns green  
+**Pass or Fail:** Pass  
+
+**Test Type:** Expected  
+**Input:**  
+x_wins = tk.Label(root, text=f"X wins: {x_score}")  # Create a label to display Player X's wins
+x_wins.grid(row=4, column=0)  # Place the label in the grid
+
+o_wins = tk.Label(root, text=f"O wins: {o_score}")  # Create a label to display Player O's wins
+o_wins.grid(row=4, column=1)  # Place the label in the grid
+
+draws = tk.Label(root, text=f"Draws: {draws_score}")  # Create a label to display the number of draws
+draws.grid(row=4, column=2)  # Place the label in the grid
+
+**Expected Outcome:** Score labels update every time a player wins or draws  
+**Actual Result:** Score variables update but not labels  
+**Pass or Fail:** Fail  
+**Debugging:** Added updating code  
+if result == "X":
+        x_score += 1  # Increment Player X's score
+        x_wins.config(text=f"X wins: {x_score}")  # Update the X wins label
+    elif result == "O":
+        o_score += 1  # Increment Player O's score
+        o_wins.config(text=f"O wins: {o_score}")  # Update the O wins label
+    elif result == "Draw":
+        draws_score += 1  # Increment the draw score
+        draws.config(text=f"Draws: {draws_score}")  # Update the Draws label
+    else:
+        print("Game reset")  # Print a message to the console when the game is reset without a win or draw
+
+
+**Test Type:** x  
+**Input:** x  
+**Expected Outcome:** x  
+**Actual Result:** x  
+**Pass or Fail:** x  
+**Debugging:** x  
