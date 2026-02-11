@@ -29,7 +29,8 @@ draws_score = 0  # Initialize the draw score
 button_num = 0
 
 def bot_move():
-    empty_buttons = [(r, c) for r in range(3) for c in range(3) if buttons[r][c]["text"] == ""]  # Get a list of empty buttons
+    empty_buttons = [(r, c) for r in range(3) 
+                     for c in range(3) if buttons[r][c]["text"] == ""]  # Get a list of empty buttons
     if empty_buttons:  # Check if there are any empty buttons left
         global win_combinations
         if empty_buttons == win_combinations:  # Check if the bot can win in the next move/basic blocking strategy
@@ -49,12 +50,14 @@ def create_board():
     
     class Button(tk.Button):
         def __init__(self, row, column):
-            super().__init__(root, text="", width=10, height=5, command=lambda r=row, c=column: on_button_click(r, c))  # Initialize the button
+            super().__init__(root, text="", width=10, height=5, 
+                             command=lambda r=row, c=column: on_button_click(r, c))  # Initialize the button
             self.grid(row=row, column=column, padx=5, pady=5)  # Place the button in the grid
     
     buttons = [[Button(row, column) for column in range(3)] for row in range(3)]  # Create a 3x3 grid of buttons
     
-    restart_button = ttk.Button(root, text="Restart", command=on_restart_button_click)  # Create Restart Button
+    restart_button = ttk.Button(root, text="Restart", 
+                                command=on_restart_button_click)  # Create Restart Button
     restart_button.grid(row=3, column=0, columnspan=3, pady=10)  # Place Restart Button in the grid
 
     score_check("")  # Initialize the score display
@@ -99,10 +102,14 @@ def opponent_choice():
     warning_text = ttk.Label(root, text="Please choose your opponent before playing:")  # Create a label with instructions
     warning_text.pack(pady=5)  # Place the label in the window with some
 
-    bot_button = ttk.Button(root, text="Player vs Bot", command=lambda: on_opponent_button_click("Bot", [bot_button, player_button, warning_text]))  # Create Bot Button
+    bot_button = ttk.Button(root, text="Player vs Bot", 
+                            command=lambda: on_opponent_button_click("Bot", [
+                            bot_button, player_button, warning_text]))  # Create Bot Button
     bot_button.pack(pady=5)  # Place Bot Button in the window
 
-    player_button = ttk.Button(root, text="Player vs Player", command=lambda: on_opponent_button_click("Player", [bot_button, player_button, warning_text]))  # Create Player Button
+    player_button = ttk.Button(root, text="Player vs Player", 
+                               command=lambda: on_opponent_button_click("Player", [
+                               bot_button, player_button, warning_text]))  # Create Player Button
     player_button.pack(pady=5)  # Place Player Button in the window
 
 # Function to handle button clicks on the game board
@@ -163,7 +170,11 @@ def score_check(result):
 def win_check():
     global win_combinations
     for combination in win_combinations:
-        if buttons[combination[0][0]][combination[0][1]]["text"] == buttons[combination[1][0]][combination[1][1]]["text"] == buttons[combination[2][0]][combination[2][1]]["text"] != "":
+        if buttons[
+            combination[0][0]][
+            combination[0][1]]["text"] == buttons[
+            combination[1][0]][combination[1][1]]["text"] == buttons[
+            combination[2][0]][combination[2][1]]["text"] != "":
             winner = buttons[combination[0][0]][combination[0][1]]["text"]  # Get the winner's symbol
             buttons[combination[0][0]][combination[0][1]].config(bg="lightgreen")  # Highlight the winning combination
             buttons[combination[1][0]][combination[1][1]].config(bg="lightgreen")  # Highlight the winning combination
