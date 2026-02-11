@@ -3,7 +3,7 @@
 ## Initial design
 Form: https://forms.gle/j5sdetE85u1PGPtFA  
 Sheet: https://docs.google.com/spreadsheets/d/19eEGh64OwdaqBzFq-PxR1QIyQveKy3fYWbkDHx5jDuk/edit?usp=sharing  
-Summary: There was a lot of feedback surrounding potential additions to the GUI. Out of which, only one was feasible given my timescale. The suggestion was to allow players to choose the symbol they want to use instead of forcing noughts and crosses. This has been recieved and will be implemented in the second sprint.
+Summary: There was a lot of feedback surrounding potential additions to the GUI. Out of which, only one was feasible given my timescale. The suggestion was to allow players to choose the symbol they want to use instead of forcing noughts and crosses. This has been recieved and will be tried implemented in the second sprint (Update: Further research into stakeholder reveals it was 'filler', and therefore will not be implemented).
 
 ## Sprint 1
 Form: https://forms.gle/9D7ZpCeJUmqW7JF89  
