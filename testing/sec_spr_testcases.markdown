@@ -68,10 +68,19 @@ if result == "X":
     else:
         print("Game reset")  # Print a message to the console when the game is reset without a win or draw
 
+**Test Type:** Expected  
+**Input:**  
+    # Function to destroy the opponent choice widgets
+    def destroy_opponent_choice_widgets(widget_1, widget_2, widget_3):
+        widget_1.destroy()  # Destroy the first widget
+        widget_2.destroy()  # Destroy the second widget
+        widget_3.destroy()  # Destroy the third widget
 
-**Test Type:** x  
-**Input:** x  
-**Expected Outcome:** x  
-**Actual Result:** x  
-**Pass or Fail:** x  
-**Debugging:** x  
+**Expected Outcome:** Widgets are destroyed  
+**Actual Result:** Widgets are destroyed  
+**Pass or Fail:** Pass  
+**Debugging:** Even though it was a pass, code was refined to allow variable amount of widgets and be more concise  
+    # Function to destroy the opponent choice widgets
+        def destroy_opponent_choice_widgets(widgets):
+            for widget in widgets:
+                widget.destroy()  # Destroy each widget in the list
