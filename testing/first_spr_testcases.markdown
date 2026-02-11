@@ -72,4 +72,14 @@ def on_restart_button_click():
 
 **Expected Outcome:** When button is clicked game resets  
 **Actual Result:** When button is clicked game resets  
+**Pass or Fail:** Pass  
+
+**Test Type:** Boundary  
+**Input:**  
+if all(button["text"] != "" for row in buttons for button in row):
+        print("It's a draw!")  # Check for a draw if all buttons are marked
+        reset_game()  # Reset the game after a draw  
+
+**Expected Outcome:** When board is full, a draw is announced and the game resets  
+**Actual Outcome:** When board is full, a draw is announced and the game resets  
 **Pass or Fail:** Pass
