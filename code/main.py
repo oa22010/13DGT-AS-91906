@@ -8,10 +8,7 @@ root = tk.Tk()
 root.title("Choose your opponent")  # Set the window title
 root.resizable(False, False)  # Disable window resizing
 
-# Initialize a global variable to count button clicks
-global button_num
-global x_score, o_score, draws_score
-global win_combinations
+# Initialize variables
 # Initialize the list to store winning combinations
 win_combinations = [
         [(0, 0), (0, 1), (0, 2)],  # First row
@@ -26,136 +23,163 @@ win_combinations = [
 x_score = 0  # Initialize Player X's score
 o_score = 0  # Initialize Player O's score
 draws_score = 0  # Initialize the draw score
-button_num = 0
+button_num = 0  # Initialize a counter to track the number of button clicks
 
 def bot_move():
     empty_buttons = [(r, c) for r in range(3) 
                      for c in range(3) if buttons[r][c]["text"] == ""]  # Get a list of empty buttons
     if empty_buttons:  # Check if there are any empty buttons left
-        global win_combinations
-        if empty_buttons == win_combinations:  # Check if the bot can win in the next move/basic blocking strategy
-            row, column = random.choice(empty_buttons)  # Randomly select an empty button
-            buttons[row][column]["text"] = "O"  # Mark the selected button with "O"
+        if empty_buttons == win_combinations:  # Basic blocking/winning strategy (placeholder)
+            row, column = random.choice(empty_buttons)
+            buttons[row][column]["text"] = "O"
+            buttons[row][column]["state"] = "disabled"
             global button_num
-            button_num += 1  # Increment the button click count after the bot's move
+            button_num += 1
         else:
-            row, column = random.choice(empty_buttons)  # Randomly select an empty button
-            buttons[row][column]["text"] = "O"  # Mark the selected button with "O"
-            button_num += 1  # Increment the button click count after the bot's move
+            row, column = random.choice(empty_buttons)
+            buttons[row][column]["text"] = "O"
+            buttons[row][column]["state"] = "disabled"
+            button_num += 1
         win_check()  # Check for a win after the bot's move
 
 # Create the noughts and crosses board
 def create_board():
     global buttons, restart_button
-    
+
     class Button(tk.Button):
         def __init__(self, row, column):
-            super().__init__(root, text="", width=10, height=5, 
-                             command=lambda r=row, c=column: on_button_click(r, c))  # Initialize the button
-            self.grid(row=row, column=column, padx=5, pady=5)  # Place the button in the grid
-    
-    buttons = [[Button(row, column) for column in range(3)] for row in range(3)]  # Create a 3x3 grid of buttons
-    button_list = [button for row in buttons for button in row]  # Flatten the list of buttons for easy access
+            super().__init__(
+                root,
+                text="",
+                width=10,
+                height=5,
+                command=lambda r=row, c=column: on_button_click(r, c),
+            )
 
-    restart_button = ttk.Button(root, text="Restart", 
-                                command=on_restart_button_click)  # Create Restart Button
-    restart_button.grid(row=3, column=0, pady=10)  # Place Restart Button in the grid
+            self.grid(row=row, column=column, padx=5, pady=5)
 
-    how_to_play_button = ttk.Button(root, text="How to play", 
-                                   command=lambda: how_to_play([
-                                   restart_button, x_wins, o_wins, draws, restart_button, 
-                                   how_to_play_button, revert_button], button_list))  # Create How to Play Button
-    how_to_play_button.grid(row=3, column=1, pady=5)  # Place How to Play Button in the grid
+    buttons = [[Button(row, column) for column in range(3)] for row in range(3)]
+    button_list = [button for row in buttons for button in row]
 
-    revert_button = ttk.Button(root, text="Back", 
-                                command=lambda: revert_board([
-                                restart_button, revert_button, x_wins, o_wins, draws, how_to_play_button], button_list))  # Create Revert Button
-    revert_button.grid(row=3, column=2, pady=5)  # Place Revert Button in the grid
+    restart_button = ttk.Button(root, text="Restart", command=on_restart_button_click)
+    restart_button.grid(row=3, column=0, pady=10)
+
+    how_to_play_button = ttk.Button(
+        root,
+        text="How to play",
+        command=lambda: how_to_play(
+            [restart_button, x_wins, o_wins, draws, restart_button, how_to_play_button, revert_button],
+            button_list,
+        ),
+    )
+    how_to_play_button.grid(row=3, column=1, pady=5)
+
+    revert_button = ttk.Button(
+        root,
+        text="Back",
+        command=lambda: revert_board(
+            [restart_button, revert_button, x_wins, o_wins, draws, how_to_play_button], button_list
+        ),
+    )
+    revert_button.grid(row=3, column=2, pady=5)
 
     global x_wins, o_wins, draws
 
-    x_wins = tk.Label(root, text=f"X wins: {x_score}")  # Create a label to display Player X's wins
-    x_wins.grid(row=4, column=0)  # Place the label in the grid
+    x_wins = tk.Label(root, text=f"X wins: {x_score}")
+    x_wins.grid(row=4, column=0)
 
-    o_wins = tk.Label(root, text=f"O wins: {o_score}")  # Create a label to display Player O's wins
-    o_wins.grid(row=4, column=2)  # Place the label in the grid
+    o_wins = tk.Label(root, text=f"O wins: {o_score}")
+    o_wins.grid(row=4, column=2)
 
-    draws = tk.Label(root, text=f"Draws: {draws_score}")  # Create a label to display the number of draws
-    draws.grid(row=4, column=1)  # Place the label in the grid
+    draws = tk.Label(root, text=f"Draws: {draws_score}")
+    draws.grid(row=4, column=1)
 
-    score_check("")  # Initialize the score display
+    score_check("")
 
 # Function to destroy the opponent choice widgets
 def destroy_opponent_choice_widgets(widgets):
     for widget in widgets:
-        widget.destroy()  # Destroy each widget in the list
+        widget.destroy()
 
 def how_to_play(widgets, button_list):
-    root.geometry("500x150")  # Set the window size for the instructions
-    root.title("How to play")  # Set the title
+    global button_num
+    button_num = 0  # Reset the button click count
+    root.geometry("500x150")
+    root.title("How to play")
 
-    destroy_opponent_choice_widgets(widgets)  # Destroy the opponent choice widgets
+    destroy_opponent_choice_widgets(widgets)
     for button in button_list:
-        button.destroy()  # Destroy the game board buttons if they exist
+        button.destroy()
 
-    instructions = tk.Label(root, text="Welcome to Noughts and Crosses!\n\n"
-                                       "To play, simply click on an empty square to place your mark (X or O).\n"
-                                       "The first player to get three in a row wins!\n"
-                                       "You can choose to play against another player or against the bot.\n"
-                                       "Good luck and have fun playing!")  # Create a label with instructions
-    instructions.pack(pady=10)  # Place the instructions label in the window with some padding
+    instructions = tk.Label(
+        root,
+        text=(
+            "Welcome to Noughts and Crosses!\n\n"
+            "To play, simply click on an empty square to place your mark (X or O).\n"
+            "The first player to get three in a row wins!\n"
+            "You can choose to play against another player or against the bot.\n"
+            "Good luck and have fun playing!"
+        ),
+    )
+    instructions.pack(pady=10)
 
-    back_button = ttk.Button(root, text="Back", 
-                             command=lambda: on_opponent_button_click(opponent, [instructions, back_button]))  # Create a Back Button to return to the opponent choice screen
+    back_button = ttk.Button(
+        root,
+        text="Back",
+        command=lambda: on_opponent_button_click(opponent, [instructions, back_button]),
+    )
     back_button.pack(pady=5)
 
 # Function to handle Restart Button clicks
 def on_restart_button_click():
-    print("Restart button clicked")# Print a message to the console when the Restart Button is clicked
-    reset_game("")  # Call the reset_game function to reset the game when the Restart Button is clicked
-    
-    # Reset the scores when the Restart Button is clicked
+    print("Restart button clicked")
+    reset_game("")
+
     global x_score, o_score, draws_score
     x_score = 0
     o_score = 0
     draws_score = 0
-    score_check("")  # Update the score display after resetting the scores
+    score_check("")
 
 # Function to handle opponent button clicks
 def on_opponent_button_click(opponent_type, widgets):
-    print(f"Selected opponent: {opponent_type}")  # Print the selected opponent type to the console
+    print(f"Selected opponent: {opponent_type}")
 
     if opponent_type == "Bot":
         global opponent
-        opponent = "Bot"  # Set the opponent variable to "Bot"
+        opponent = "Bot"
     elif opponent_type == "Player":
-        opponent = "Player"  # Set the opponent variable to "Player"
+        opponent = "Player"
 
-    root.title("Noughts and Crosses")  # Set the window title
-    root.geometry("270x370") # Set the window size to dimensions needed for the game interface
-    
-    destroy_opponent_choice_widgets(widgets)  # Destroy the opponent choice buttons
-    create_board()  # Create the game board
+    root.title("Noughts and Crosses")
+    root.geometry("270x370")
+
+    destroy_opponent_choice_widgets(widgets)
+    create_board()
 
 # Function to display the opponent choice interface
 def opponent_choice():
     global opponent_type
-    
-    root.geometry("250x100")  # Set the window size for the opponent choice interface
-    root.title("Choose opponent")  # Set the title
 
-    warning_text = ttk.Label(root, text="Please choose your opponent before playing:")  # Create a label with instructions
-    warning_text.pack(pady=5)  # Place the label in the window with some
+    root.geometry("250x100")
+    root.title("Choose opponent")
 
-    bot_button = ttk.Button(root, text="Player vs Bot", 
-                            command=lambda: on_opponent_button_click("Bot", [
-                            bot_button, player_button, warning_text]))  # Create Bot Button
-    bot_button.pack(pady=5)  # Place Bot Button in the window
+    warning_text = ttk.Label(root, text="Please choose your opponent before playing:")
+    warning_text.pack(pady=5)
 
-    player_button = ttk.Button(root, text="Player vs Player", 
-                               command=lambda: on_opponent_button_click("Player", [
-                               bot_button, player_button, warning_text]))  # Create Player Button
-    player_button.pack(pady=5)  # Place Player Button in the window
+    bot_button = ttk.Button(
+        root,
+        text="Player vs Bot",
+        command=lambda: on_opponent_button_click("Bot", [bot_button, player_button, warning_text]),
+    )
+    bot_button.pack(pady=5)
+
+    player_button = ttk.Button(
+        root,
+        text="Player vs Player",
+        command=lambda: on_opponent_button_click("Player", [bot_button, player_button, warning_text]),
+    )
+    player_button.pack(pady=5)
 
 # Function to handle button clicks on the game board
 def on_button_click(row, column):
@@ -185,9 +209,11 @@ def reset_game(restart):
         for button in row:
             button["text"] = ""  # Clear the text on all buttons to reset the game
             button["state"] = "normal"  # Enable all buttons to reset the game
-            root.after(1000, lambda b=button: b.config(bg="SystemButtonFace"))  # Reset the background color of the buttons after a short delay
+            root.after(1000, lambda b=button: b.config(bg="SystemButtonFace"))
 
 def revert_board(widgets, button_list):
+    global button_num
+    button_num = 0  # Reset the button click count
     for button in button_list:
         button.destroy()  # Destroy the game board buttons
     destroy_opponent_choice_widgets(widgets)  # Destroy the Restart and Revert buttons
@@ -212,26 +238,31 @@ def score_check(result):
 def win_check():
     global win_combinations
     for combination in win_combinations:
-        if buttons[
-            combination[0][0]][
-            combination[0][1]]["text"] == buttons[
-            combination[1][0]][combination[1][1]]["text"] == buttons[
-            combination[2][0]][combination[2][1]]["text"] != "":
-            winner = buttons[combination[0][0]][combination[0][1]]["text"]  # Get the winner's symbol
+        a, b, c = combination
+
+        if (
+            buttons[a[0]][a[1]]["text"]
+            == buttons[b[0]][b[1]]["text"]
+            == buttons[c[0]][c[1]]["text"]
+            != ""
+        ):
+            winner = buttons[a[0]][a[1]]["text"]
+
             if winner == "X":
-                color = "#ff9999"  # Set the highlight color for Player X
+                color = "#ff9999"
             elif winner == "O":
-                color = "lightblue"  # Set the highlight color for Player O
-            buttons[combination[0][0]][combination[0][1]].config(bg=color)  # Highlight the winning combination
-            buttons[combination[1][0]][combination[1][1]].config(bg=color)  # Highlight the winning combination
-            buttons[combination[2][0]][combination[2][1]].config(bg=color)  # Highlight the winning combination
-            score_check(winner)  # Update the scores based on the winner
-            reset_game(winner)  # Reset the game after a win
-            return  # Exit the function after a win is detected
-        elif all(button["text"] != "" for row in buttons for button in row):
-            reset_game("Draw")  # Reset the game after a draw
-        else:
-            pass
+                color = "lightblue"
+
+            buttons[a[0]][a[1]].config(bg=color)
+            buttons[b[0]][b[1]].config(bg=color)
+            buttons[c[0]][c[1]].config(bg=color)
+
+            score_check(winner)
+            reset_game(winner)
+            return
+
+    if all(button["text"] != "" for row in buttons for button in row):
+        reset_game("Draw")
 
 opponent_choice()  # Call the function to display the opponent choice window
 
