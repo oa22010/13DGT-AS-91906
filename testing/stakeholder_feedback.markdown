@@ -13,4 +13,4 @@ Summary: The feedback for Sprint 1 was varied. The general concensus was that ae
 ## Sprint 2:
 Form: https://forms.gle/8AGfXZ4hvQkx9g5H8  
 Sheet: https://docs.google.com/spreadsheets/d/1qByO4KTLEZwfXXSAYRxuehuG-YMvy0ovqgnBo7R2S2s/edit?usp=sharing  
-Summary: The feedback for Sprint 2 was plentiful. Among the stakeholder feedback, I will implement different color lightups for different symbols, attempt to fix the score labels aesthetics and a button that allows the player to swap between player and bot. In addition I will improve the overall GUI of the program for aesthetic purposes.
+Summary: The feedback for Sprint 2 was plentiful. As the final sprint of the game, my stakeholders were more than willing to provide adequate feedback to finish this process well. Among the stakeholder feedback, I will implement different color lightups for different symbols, attempt to fix the score labels aesthetics and a button that allows the player to swap between player and bot. In addition I will improve the overall GUI of the program for aesthetic purposes.
