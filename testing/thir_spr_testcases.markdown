@@ -25,6 +25,34 @@ for button in row:
             button["text"] = ""  # Clear the text on all buttons to reset the game
             button["state"] = "normal"  # Enable all buttons to reset the game
 
+**Test Type:** Expected  
+**Input:**  
+revert_button = ttk.Button(root, text="Back", 
+    command=lambda: revert_board([
+    restart_button, revert_button, x_wins, o_wins, draws], button_list))  # Create Revert Button
+
+**Expected Outcome:** Removes all widgets and reverts window  
+**Actual Result:** Creates error, with how to play button not removed  
+**Pass or Fail:** Fail  
+**Debugging:** Added 'how_to_play_button' to list  
+
+**Test Type:** Expected  
+**Input:**  
+buttons = [[Button(row, column) for column in range(3)] for row in range(3)]  # Create a 3x3 grid of buttons  
+revert_button = ttk.Button(root, text="Back", 
+    command=lambda: revert_board([
+    restart_button, revert_button, x_wins, o_wins, draws, how_to_play_button], buttons))
+
+**Expected Outcome:** Buttons are deleted when revert button is clicked  
+**Actual Result:** Error  
+**Pass or Fail:** Fail  
+**Debugging:** Flattened list so it can be read  
+buttons = [[Button(row, column) for column in range(3)] for row in range(3)]  # Create a 3x3 grid of buttons
+button_list = [button for row in buttons for button in row]    
+revert_button = ttk.Button(root, text="Back", 
+    command=lambda: revert_board([
+    restart_button, revert_button, x_wins, o_wins, draws, how_to_play_button], button_list))
+
 **Test Type:** x  
 **Input:**  
 x
