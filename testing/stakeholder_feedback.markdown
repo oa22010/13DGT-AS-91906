@@ -11,6 +11,6 @@ Sheet: https://docs.google.com/spreadsheets/d/1CsqoPuuAhTKje5A0bthlC2VfRUO9xmcZ3
 Summary: The feedback for Sprint 1 was varied. The general concensus was that aesthetics should be improved, but the suggestion for a score system was brought up. I will act on both of these suggestions in Sprint 2.
 
 ## Sprint 2:
-Form:  
-Sheet:  
-Summary: 
+Form: https://forms.gle/8AGfXZ4hvQkx9g5H8  
+Sheet: https://docs.google.com/spreadsheets/d/1qByO4KTLEZwfXXSAYRxuehuG-YMvy0ovqgnBo7R2S2s/edit?usp=sharing  
+Summary: The feedback for Sprint 2 was plentiful. Among the stakeholder feedback, I will implement different color lightups for different symbols, attempt to fix the score labels aesthetics and a button that allows the player to swap between player and bot. In addition I will improve the overall GUI of the program for aesthetic purposes.
