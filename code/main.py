@@ -176,9 +176,13 @@ def win_check():
             combination[1][0]][combination[1][1]]["text"] == buttons[
             combination[2][0]][combination[2][1]]["text"] != "":
             winner = buttons[combination[0][0]][combination[0][1]]["text"]  # Get the winner's symbol
-            buttons[combination[0][0]][combination[0][1]].config(bg="lightgreen")  # Highlight the winning combination
-            buttons[combination[1][0]][combination[1][1]].config(bg="lightgreen")  # Highlight the winning combination
-            buttons[combination[2][0]][combination[2][1]].config(bg="lightgreen")  # Highlight the winning combination
+            if winner == "X":
+                color = "#ff9999"  # Set the highlight color for Player X
+            elif winner == "O":
+                color = "lightblue"  # Set the highlight color for Player O
+            buttons[combination[0][0]][combination[0][1]].config(bg=color)  # Highlight the winning combination
+            buttons[combination[1][0]][combination[1][1]].config(bg=color)  # Highlight the winning combination
+            buttons[combination[2][0]][combination[2][1]].config(bg=color)  # Highlight the winning combination
             score_check(winner)  # Update the scores based on the winner
             reset_game(winner)  # Reset the game after a win
             return  # Exit the function after a win is detected
