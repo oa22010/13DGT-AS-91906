@@ -55,10 +55,27 @@ def create_board():
             self.grid(row=row, column=column, padx=5, pady=5)  # Place the button in the grid
     
     buttons = [[Button(row, column) for column in range(3)] for row in range(3)]  # Create a 3x3 grid of buttons
-    
+    button_list = [button for row in buttons for button in row]  # Flatten the list of buttons for easy access
+
     restart_button = ttk.Button(root, text="Restart", 
                                 command=on_restart_button_click)  # Create Restart Button
-    restart_button.grid(row=3, column=0, columnspan=3, pady=10)  # Place Restart Button in the grid
+    restart_button.grid(row=3, column=0, pady=10)  # Place Restart Button in the grid
+
+    revert_button = ttk.Button(root, text="Back", 
+                                command=lambda: revert_board([
+                                restart_button, revert_button, x_wins, o_wins, draws], button_list))  # Create Revert Button
+    revert_button.grid(row=3, column=2, pady=5)  # Place Revert Button in the grid
+
+    global x_wins, o_wins, draws
+
+    x_wins = tk.Label(root, text=f"X wins: {x_score}")  # Create a label to display Player X's wins
+    x_wins.grid(row=4, column=0)  # Place the label in the grid
+
+    o_wins = tk.Label(root, text=f"O wins: {o_score}")  # Create a label to display Player O's wins
+    o_wins.grid(row=4, column=2)  # Place the label in the grid
+
+    draws = tk.Label(root, text=f"Draws: {draws_score}")  # Create a label to display the number of draws
+    draws.grid(row=4, column=1)  # Place the label in the grid
 
     score_check("")  # Initialize the score display
 
@@ -97,6 +114,7 @@ def on_opponent_button_click(opponent_type, widgets):
 
 # Function to display the opponent choice interface
 def opponent_choice():
+    root.geometry("250x100")  # Set the window size for the opponent choice interface
     root.title("Choose opponent")  # Set the title
 
     warning_text = ttk.Label(root, text="Please choose your opponent before playing:")  # Create a label with instructions
@@ -133,7 +151,7 @@ def on_button_click(row, column):
         buttons[row][column]["state"] = "disabled"  # Disable the button after it's marked
     win_check()  # Check for a win after the player's move
 
-def reset_game(result):
+def reset_game(restart):
     global button_num
     button_num = 0  # Reset the button click count
     for row in buttons:
@@ -142,17 +160,14 @@ def reset_game(result):
             button["state"] = "normal"  # Enable all buttons to reset the game
             root.after(1000, lambda b=button: b.config(bg="SystemButtonFace"))  # Reset the background color of the buttons after a short delay
 
+def revert_board(widgets, button_list):
+    for button in button_list:
+        button.destroy()  # Destroy the game board buttons
+    destroy_opponent_choice_widgets(widgets)  # Destroy the Restart and Revert buttons
+    opponent_choice()  # Call the function to display the opponent choice window again
+
 def score_check(result):
     global x_score, o_score, draws_score
-
-    x_wins = tk.Label(root, text=f"X wins: {x_score}")  # Create a label to display Player X's wins
-    x_wins.grid(row=4, column=0)  # Place the label in the grid
-
-    o_wins = tk.Label(root, text=f"O wins: {o_score}")  # Create a label to display Player O's wins
-    o_wins.grid(row=4, column=1)  # Place the label in the grid
-
-    draws = tk.Label(root, text=f"Draws: {draws_score}")  # Create a label to display the number of draws
-    draws.grid(row=4, column=2)  # Place the label in the grid
     
     if result == "X":
         x_score += 1  # Increment Player X's score
