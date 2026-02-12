@@ -61,9 +61,15 @@ def create_board():
                                 command=on_restart_button_click)  # Create Restart Button
     restart_button.grid(row=3, column=0, pady=10)  # Place Restart Button in the grid
 
+    how_to_play_button = ttk.Button(root, text="How to play", 
+                                   command=lambda: how_to_play([
+                                   restart_button, x_wins, o_wins, draws, restart_button, 
+                                   how_to_play_button, revert_button], button_list))  # Create How to Play Button
+    how_to_play_button.grid(row=3, column=1, pady=5)  # Place How to Play Button in the grid
+
     revert_button = ttk.Button(root, text="Back", 
                                 command=lambda: revert_board([
-                                restart_button, revert_button, x_wins, o_wins, draws], button_list))  # Create Revert Button
+                                restart_button, revert_button, x_wins, o_wins, draws, how_to_play_button], button_list))  # Create Revert Button
     revert_button.grid(row=3, column=2, pady=5)  # Place Revert Button in the grid
 
     global x_wins, o_wins, draws
@@ -84,6 +90,25 @@ def destroy_opponent_choice_widgets(widgets):
     for widget in widgets:
         widget.destroy()  # Destroy each widget in the list
 
+def how_to_play(widgets, button_list):
+    root.geometry("500x150")  # Set the window size for the instructions
+    root.title("How to play")  # Set the title
+
+    destroy_opponent_choice_widgets(widgets)  # Destroy the opponent choice widgets
+    for button in button_list:
+        button.destroy()  # Destroy the game board buttons if they exist
+
+    instructions = tk.Label(root, text="Welcome to Noughts and Crosses!\n\n"
+                                       "To play, simply click on an empty square to place your mark (X or O).\n"
+                                       "The first player to get three in a row wins!\n"
+                                       "You can choose to play against another player or against the bot.\n"
+                                       "Good luck and have fun playing!")  # Create a label with instructions
+    instructions.pack(pady=10)  # Place the instructions label in the window with some padding
+
+    back_button = ttk.Button(root, text="Back", 
+                             command=lambda: on_opponent_button_click(opponent, [instructions, back_button]))  # Create a Back Button to return to the opponent choice screen
+    back_button.pack(pady=5)
+
 # Function to handle Restart Button clicks
 def on_restart_button_click():
     print("Restart button clicked")# Print a message to the console when the Restart Button is clicked
@@ -99,7 +124,7 @@ def on_restart_button_click():
 # Function to handle opponent button clicks
 def on_opponent_button_click(opponent_type, widgets):
     print(f"Selected opponent: {opponent_type}")  # Print the selected opponent type to the console
-    
+
     if opponent_type == "Bot":
         global opponent
         opponent = "Bot"  # Set the opponent variable to "Bot"
@@ -114,6 +139,8 @@ def on_opponent_button_click(opponent_type, widgets):
 
 # Function to display the opponent choice interface
 def opponent_choice():
+    global opponent_type
+    
     root.geometry("250x100")  # Set the window size for the opponent choice interface
     root.title("Choose opponent")  # Set the title
 
