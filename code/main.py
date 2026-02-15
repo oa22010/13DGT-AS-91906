@@ -41,7 +41,19 @@ def bot_move():
             row, column = (2, 2)
         elif empty_buttons_dict.get((0, 2)) == "X" and empty_buttons_dict.get((1, 1)) == "X" and empty_buttons_dict.get((2, 0)) == "":
             row, column = (2, 0)
-        elif empty_buttons_dict.get((row, 0)) == "O" and empty_buttons_dict.get((row, 2)) == "O" and empty_buttons_dict.get((row, 1)) == "":
+        elif empty_buttons_dict.get((0, column)) == "" and empty_buttons_dict.get((1, column)) == "X" and empty_buttons_dict.get((2, column)) == "X":
+            row, column = (0, column)
+        elif empty_buttons_dict.get((row, 0)) == "" and empty_buttons_dict.get((row, 1)) == "X" and empty_buttons_dict.get((row, 2)) == "X":
+            row, column = (row, 0)
+        elif empty_buttons_dict.get((0, 0)) == "" and empty_buttons_dict.get((1, 1)) == "X" and empty_buttons_dict.get((2, 2)) == "X":
+            row, column = (0, 0)
+        elif empty_buttons_dict.get((0, 2)) == "" and empty_buttons_dict.get((1, 1)) == "X" and empty_buttons_dict.get((2, 0)) == "X":
+            row, column = (0, 2)
+        elif empty_buttons_dict.get((0, column)) == "X" and empty_buttons_dict.get((1, column)) == "" and empty_buttons_dict.get((2, column)) == "X":
+            row, column = (1, column)
+        elif empty_buttons_dict.get((row, 0)) == "X" and empty_buttons_dict.get((row, 1)) == "" and empty_buttons_dict.get((row, 2)) == "X":
+            row, column = (row, 1)
+        if empty_buttons_dict.get((row, 0)) == "O" and empty_buttons_dict.get((row, 2)) == "O" and empty_buttons_dict.get((row, 1)) == "":
             row, column = (row, 1)
         elif empty_buttons_dict.get((0, column)) == "O" and empty_buttons_dict.get((2, column)) == "O" and empty_buttons_dict.get((1, column)) == "":
             row, column = (1, column)
@@ -49,6 +61,10 @@ def bot_move():
             row, column = (1, 1)
         elif empty_buttons_dict.get((0, 2)) == "O" and empty_buttons_dict.get((1, 1)) == "O" and empty_buttons_dict.get((2, 0)) == "":
             row, column = (2, 0)
+        elif empty_buttons_dict.get((0, 0)) == "O" and empty_buttons_dict.get((2, 2)) == "" and empty_buttons_dict.get((1, 1)) == "O":
+            row, column = (2, 2)
+        elif empty_buttons_dict.get((0, 0)) == "O" and empty_buttons_dict.get((1, 1)) == "" and empty_buttons_dict.get((2, 2)) == "O":
+            row, column = (1, 1)
         else:
             row, column = random.choice(empty_buttons)
         buttons[row][column]["text"] = "O"
