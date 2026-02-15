@@ -84,7 +84,11 @@ def bot_move():
 
 # Create the noughts and crosses board
 def create_board():
-    global buttons, restart_button
+    global buttons, restart_button, x_score, o_score, draws_score
+
+    x_score = 0  # Reset Player X's score
+    o_score = 0  # Reset Player O's score
+    draws_score = 0  # Reset the draw score
 
     class Button(tk.Button):
         def __init__(self, row, column):
