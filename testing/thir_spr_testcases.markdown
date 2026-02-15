@@ -64,15 +64,15 @@
 **Input:**  
 
     def bot_move():
-    empty_buttons = [(r, c) for r in range(3) 
-                     for c in range(3) if buttons[r][c]["text"] == ""]  # Get a list of empty buttons
-    empty_buttons_dict = {(r, c): buttons[r][c]["text"] for r in range(3) 
-                          for c in range(3) if buttons[r][c]["text"] == ""}  # Create a dictionary of empty buttons with their coordinates as keys and their text as values
-    row = random.randint(0, 2)  # Generate a random row index
-    column = random.randint(0, 2)  # Generate a random column index
-    if empty_buttons:  # Check if there are any empty buttons left
-        if empty_buttons_dict.get((0, column)) == "X" and empty_buttons_dict.get((1, column)) == "X" and empty_buttons_dict.get((2, column)) == "":
-            row, column = (2, column)  
+        empty_buttons = [(r, c) for r in range(3) 
+                        for c in range(3) if buttons[r][c]["text"] == ""]  # Get a list of empty buttons
+        empty_buttons_dict = {(r, c): buttons[r][c]["text"] for r in range(3) 
+                            for c in range(3) if buttons[r][c]["text"] == ""}  # Create a dictionary of empty buttons with their coordinates as keys and their text as values
+        row = random.randint(0, 2)  # Generate a random row index
+        column = random.randint(0, 2)  # Generate a random column index
+        if empty_buttons:  # Check if there are any empty buttons left
+            if empty_buttons_dict.get((0, column)) == "X" and empty_buttons_dict.get((1, column)) == "X" and empty_buttons_dict.get((2, column)) == "":
+                row, column = (2, column)  
 
 **Expected Outcome:** Bot blocks player and wins when possible  
 **Actual Result:** Bot fails to block and always acts randomly  
