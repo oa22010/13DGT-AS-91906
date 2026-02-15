@@ -96,6 +96,19 @@
             win_check()
             return
 
+**Test Type:** Boundary  
+**Input:** User ends a game and goes back to choose new opponent  
+**Expected Outcome:** Scores reset  
+**Actual Result:** Scores remain  
+**Pass or Fail:** Fail  
+**Debugging:** Added code to reset code  
+
+    global buttons, restart_button, x_score, o_score, draws_score
+
+    x_score = 0  # Reset Player X's score
+    o_score = 0  # Reset Player O's score
+    draws_score = 0  # Reset the draw score
+
 **Test Type:** x  
 **Input:**  
 x
