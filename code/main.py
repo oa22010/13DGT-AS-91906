@@ -25,53 +25,54 @@ o_score = 0  # Initialize Player O's score
 draws_score = 0  # Initialize the draw score
 button_num = 0  # Initialize a counter to track the number of button clicks
 
+# Function to handle the bot's move
 def bot_move():
-    empty_buttons = [(r, c) for r in range(3) 
-                     for c in range(3) if buttons[r][c]["text"] == ""]  # Get a list of empty buttons
-    empty_buttons_dict = {(r, c): buttons[r][c]["text"] for r in range(3) 
-                          for c in range(3) if buttons[r][c]["text"] == ""}  # Create a dictionary of empty buttons with their coordinates as keys and their text as values
-    row = random.randint(0, 2)  # Generate a random row index
-    column = random.randint(0, 2)  # Generate a random column index
-    if empty_buttons:  # Check if there are any empty buttons left
-        if empty_buttons_dict.get((0, column)) == "X" and empty_buttons_dict.get((1, column)) == "X" and empty_buttons_dict.get((2, column)) == "":
-            row, column = (2, column)
-        elif empty_buttons_dict.get((row, 0)) == "X" and empty_buttons_dict.get((row, 1)) == "X" and empty_buttons_dict.get((row, 2)) == "":
-            row, column = (row, 2)
-        elif empty_buttons_dict.get((0, 0)) == "X" and empty_buttons_dict.get((1, 1)) == "X" and empty_buttons_dict.get((2, 2)) == "":
-            row, column = (2, 2)
-        elif empty_buttons_dict.get((0, 2)) == "X" and empty_buttons_dict.get((1, 1)) == "X" and empty_buttons_dict.get((2, 0)) == "":
-            row, column = (2, 0)
-        elif empty_buttons_dict.get((0, column)) == "" and empty_buttons_dict.get((1, column)) == "X" and empty_buttons_dict.get((2, column)) == "X":
-            row, column = (0, column)
-        elif empty_buttons_dict.get((row, 0)) == "" and empty_buttons_dict.get((row, 1)) == "X" and empty_buttons_dict.get((row, 2)) == "X":
-            row, column = (row, 0)
-        elif empty_buttons_dict.get((0, 0)) == "" and empty_buttons_dict.get((1, 1)) == "X" and empty_buttons_dict.get((2, 2)) == "X":
-            row, column = (0, 0)
-        elif empty_buttons_dict.get((0, 2)) == "" and empty_buttons_dict.get((1, 1)) == "X" and empty_buttons_dict.get((2, 0)) == "X":
-            row, column = (0, 2)
-        elif empty_buttons_dict.get((0, column)) == "X" and empty_buttons_dict.get((1, column)) == "" and empty_buttons_dict.get((2, column)) == "X":
-            row, column = (1, column)
-        elif empty_buttons_dict.get((row, 0)) == "X" and empty_buttons_dict.get((row, 1)) == "" and empty_buttons_dict.get((row, 2)) == "X":
-            row, column = (row, 1)
-        if empty_buttons_dict.get((row, 0)) == "O" and empty_buttons_dict.get((row, 2)) == "O" and empty_buttons_dict.get((row, 1)) == "":
-            row, column = (row, 1)
-        elif empty_buttons_dict.get((0, column)) == "O" and empty_buttons_dict.get((2, column)) == "O" and empty_buttons_dict.get((1, column)) == "":
-            row, column = (1, column)
-        elif empty_buttons_dict.get((0, 2)) == "O" and empty_buttons_dict.get((2, 0)) == "O" and empty_buttons_dict.get((1, 1)) == "":
-            row, column = (1, 1)
-        elif empty_buttons_dict.get((0, 2)) == "O" and empty_buttons_dict.get((1, 1)) == "O" and empty_buttons_dict.get((2, 0)) == "":
-            row, column = (2, 0)
-        elif empty_buttons_dict.get((0, 0)) == "O" and empty_buttons_dict.get((2, 2)) == "" and empty_buttons_dict.get((1, 1)) == "O":
-            row, column = (2, 2)
-        elif empty_buttons_dict.get((0, 0)) == "O" and empty_buttons_dict.get((1, 1)) == "" and empty_buttons_dict.get((2, 2)) == "O":
-            row, column = (1, 1)
-        else:
-            row, column = random.choice(empty_buttons)
+    # Create a list of empty buttons on the board
+    empty_buttons = [(r, c) for r in range(3)
+                     for c in range(3)
+                     if buttons[r][c]["text"] == ""]
+
+    # Try to WIN first
+    for combination in win_combinations:
+        a, b, c = combination
+        values = [buttons[a[0]][a[1]]["text"],
+                  buttons[b[0]][b[1]]["text"],
+                  buttons[c[0]][c[1]]["text"]]
+
+        if values.count("O") == 2 and values.count("") == 1:
+            move = combination[values.index("")]
+            row, column = move
+            buttons[row][column]["text"] = "O"
+            buttons[row][column]["state"] = "disabled"
+            global button_num
+            button_num += 1
+            win_check()
+            return
+
+    # BLOCK the player
+    for combination in win_combinations:
+        a, b, c = combination
+        values = [buttons[a[0]][a[1]]["text"],
+                  buttons[b[0]][b[1]]["text"],
+                  buttons[c[0]][c[1]]["text"]]
+
+        if values.count("X") == 2 and values.count("") == 1:
+            move = combination[values.index("")]
+            row, column = move
+            buttons[row][column]["text"] = "O"
+            buttons[row][column]["state"] = "disabled"
+            button_num += 1
+            win_check()
+            return
+
+    # Otherwise pick random
+    if empty_buttons:
+        row, column = random.choice(empty_buttons)
         buttons[row][column]["text"] = "O"
         buttons[row][column]["state"] = "disabled"
-        global button_num
         button_num += 1
-    win_check()  # Check for a win after the bot's move
+        win_check()
+
 
 # Create the noughts and crosses board
 def create_board():
