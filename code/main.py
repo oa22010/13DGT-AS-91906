@@ -65,6 +65,14 @@ def bot_move():
             win_check()
             return
 
+    # If no winning or blocking move is available, pick middle if available
+    if buttons[1][1]["text"] == "":
+        buttons[1][1]["text"] = "O"
+        buttons[1][1]["state"] = "disabled"
+        button_num += 1
+        win_check()
+        return
+
     # Otherwise pick random
     if empty_buttons:
         row, column = random.choice(empty_buttons)
