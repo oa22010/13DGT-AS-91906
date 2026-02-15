@@ -28,19 +28,34 @@ button_num = 0  # Initialize a counter to track the number of button clicks
 def bot_move():
     empty_buttons = [(r, c) for r in range(3) 
                      for c in range(3) if buttons[r][c]["text"] == ""]  # Get a list of empty buttons
+    empty_buttons_dict = {(r, c): buttons[r][c]["text"] for r in range(3) 
+                          for c in range(3) if buttons[r][c]["text"] == ""}  # Create a dictionary of empty buttons with their coordinates as keys and their text as values
+    row = random.randint(0, 2)  # Generate a random row index
+    column = random.randint(0, 2)  # Generate a random column index
     if empty_buttons:  # Check if there are any empty buttons left
-        if empty_buttons == win_combinations:  # Basic blocking/winning strategy (placeholder)
-            row, column = random.choice(empty_buttons)
-            buttons[row][column]["text"] = "O"
-            buttons[row][column]["state"] = "disabled"
-            global button_num
-            button_num += 1
+        if empty_buttons_dict.get((0, column)) == "X" and empty_buttons_dict.get((1, column)) == "X" and empty_buttons_dict.get((2, column)) == "":
+            row, column = (2, column)
+        elif empty_buttons_dict.get((row, 0)) == "X" and empty_buttons_dict.get((row, 1)) == "X" and empty_buttons_dict.get((row, 2)) == "":
+            row, column = (row, 2)
+        elif empty_buttons_dict.get((0, 0)) == "X" and empty_buttons_dict.get((1, 1)) == "X" and empty_buttons_dict.get((2, 2)) == "":
+            row, column = (2, 2)
+        elif empty_buttons_dict.get((0, 2)) == "X" and empty_buttons_dict.get((1, 1)) == "X" and empty_buttons_dict.get((2, 0)) == "":
+            row, column = (2, 0)
+        elif empty_buttons_dict.get((row, 0)) == "O" and empty_buttons_dict.get((row, 2)) == "O" and empty_buttons_dict.get((row, 1)) == "":
+            row, column = (row, 1)
+        elif empty_buttons_dict.get((0, column)) == "O" and empty_buttons_dict.get((2, column)) == "O" and empty_buttons_dict.get((1, column)) == "":
+            row, column = (1, column)
+        elif empty_buttons_dict.get((0, 2)) == "O" and empty_buttons_dict.get((2, 0)) == "O" and empty_buttons_dict.get((1, 1)) == "":
+            row, column = (1, 1)
+        elif empty_buttons_dict.get((0, 2)) == "O" and empty_buttons_dict.get((1, 1)) == "O" and empty_buttons_dict.get((2, 0)) == "":
+            row, column = (2, 0)
         else:
             row, column = random.choice(empty_buttons)
-            buttons[row][column]["text"] = "O"
-            buttons[row][column]["state"] = "disabled"
-            button_num += 1
-        win_check()  # Check for a win after the bot's move
+        buttons[row][column]["text"] = "O"
+        buttons[row][column]["state"] = "disabled"
+        global button_num
+        button_num += 1
+    win_check()  # Check for a win after the bot's move
 
 # Create the noughts and crosses board
 def create_board():
@@ -202,9 +217,11 @@ def on_button_click(row, column):
         buttons[row][column]["state"] = "disabled"  # Disable the button after it's marked
     win_check()  # Check for a win after the player's move
 
-def reset_game(restart):
+def reset_game(result):
     global button_num
     button_num = 0  # Reset the button click count
+    if result == "Draw":
+        score_check("Draw")  # Update the draw score
     for row in buttons:
         for button in row:
             button["text"] = ""  # Clear the text on all buttons to reset the game
