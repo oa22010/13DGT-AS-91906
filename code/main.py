@@ -25,6 +25,19 @@ o_score = 0  # Initialize Player O's score
 draws_score = 0  # Initialize the draw score
 button_num = 0  # Initialize a counter to track the number of button clicks
 
+# Define a custom Button class that inherits from tk.Button
+class Button(tk.Button):
+        def __init__(self, row, column):
+            super().__init__(
+                root,
+                text="",
+                width=10,
+                height=5,
+                command=lambda r=row, c=column: on_button_click(r, c),
+            )
+
+            self.grid(row=row, column=column, padx=5, pady=5)
+
 # Function to handle the bot's move
 def bot_move():
     # Create a list of empty buttons on the board
@@ -88,18 +101,6 @@ def create_board():
     x_score = 0  # Reset Player X's score
     o_score = 0  # Reset Player O's score
     draws_score = 0  # Reset the draw score
-
-    class Button(tk.Button):
-        def __init__(self, row, column):
-            super().__init__(
-                root,
-                text="",
-                width=10,
-                height=5,
-                command=lambda r=row, c=column: on_button_click(r, c),
-            )
-
-            self.grid(row=row, column=column, padx=5, pady=5)
 
     buttons = [[Button(row, column) for column in range(3)] for row in range(3)]
     button_list = [button for row in buttons for button in row]
