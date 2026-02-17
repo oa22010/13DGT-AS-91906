@@ -7,13 +7,13 @@ __Feedback gathering:__
 I gathered feedback via sending google forms to my stakeholders, and recording their replies. This versatile and simple platform allowed me not only to clearly see my feedback, but also seamlessly transfer said feedback into a sheet, allowing me to compare stakeholders suggestions with ease. It also allowed me to send reminders to my stakeholders, increasing efficiency greatly. Overall the process was smooth and possibly the most satisfyingly simple task of my project.
 
 
-![Image](..testing\screenshots\Form sample.png)  
+![Image](../testing/screenshots/Form%20sample.png)  
 _Part of one of the forms used to gather feedback_
 
 __Research and learning process:__  
 As I will mention later on in this evaluation, I went into this project expecting my prior knowledge to be sufficient to complete most of this project's code, if not all. I was sorely mistaken. Despite the difficulties I faced, one thing I had no difficulty with was researching and learning how to overcome these difficulties. This project pushed me to learn much more about Tkinter, and indeed Python coding in general. With the assistance of my teachers' lessons and the site w3schools, I had no issue accessing the information I needed to complete the coding aspect of this project. Not only did this process of the project go well, it also greatly added to my coding knowledge.
 
-![Image](../assets/images/Tkdocs_homepage.png)  
+![Image](../testing/screenshots/w3schools%20page.png)  
 _Homepage of w3schools_
 
 __Stakeholder satisfaction__  
