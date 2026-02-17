@@ -81,7 +81,6 @@ def bot_move():
         button_num += 1
         win_check()
 
-
 # Create the noughts and crosses board
 def create_board():
     global buttons, restart_button, x_score, o_score, draws_score
@@ -145,6 +144,7 @@ def destroy_opponent_choice_widgets(widgets):
     for widget in widgets:
         widget.destroy()
 
+# Function to display the "How to play" instructions
 def how_to_play(widgets, button_list):
     global button_num
     button_num = 0  # Reset the button click count
@@ -246,6 +246,7 @@ def on_button_click(row, column):
         buttons[row][column]["state"] = "disabled"  # Disable the button after it's marked
     win_check()  # Check for a win after the player's move
 
+# Function to reset the game board and update scores
 def reset_game(result):
     global button_num
     button_num = 0  # Reset the button click count
@@ -257,6 +258,7 @@ def reset_game(result):
             button["state"] = "normal"  # Enable all buttons to reset the game
             root.after(1000, lambda b=button: b.config(bg="SystemButtonFace"))
 
+# Function to revert the game board and return to the opponent choice screen
 def revert_board(widgets, button_list):
     global button_num
     button_num = 0  # Reset the button click count
@@ -265,6 +267,7 @@ def revert_board(widgets, button_list):
     destroy_opponent_choice_widgets(widgets)  # Destroy the Restart and Revert buttons
     opponent_choice()  # Call the function to display the opponent choice window again
 
+# Function to update the scores based on the game result
 def score_check(result):
     global x_score, o_score, draws_score
     
