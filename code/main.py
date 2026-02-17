@@ -313,7 +313,8 @@ def win_check():
     if all(button["text"] != "" for row in buttons for button in row):
         reset_game("Draw")
 
-opponent_choice()  # Call the function to display the opponent choice window
+# Call the function to display the opponent choice window
+opponent_choice()
 
 # Start the Tkinter main event loop to run the application
 root.mainloop()
