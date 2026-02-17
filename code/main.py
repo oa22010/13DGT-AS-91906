@@ -27,6 +27,7 @@ button_num = 0  # Initialize a counter to track the number of button clicks
 
 # Define a custom Button class that inherits from tk.Button
 class Button(tk.Button):
+        # Initialize the Button with specific properties and a command to handle clicks
         def __init__(self, row, column):
             super().__init__(
                 root,
@@ -96,15 +97,18 @@ def bot_move():
 
 # Create the noughts and crosses board
 def create_board():
+    # Declare global variables to be used in this function
     global buttons, restart_button, x_score, o_score, draws_score
 
     x_score = 0  # Reset Player X's score
     o_score = 0  # Reset Player O's score
     draws_score = 0  # Reset the draw score
 
+    # Create a 3x3 grid of buttons for the game board
     buttons = [[Button(row, column) for column in range(3)] for row in range(3)]
     button_list = [button for row in buttons for button in row]
 
+    # Create the Restart, How to play, and Back buttons
     restart_button = ttk.Button(root, text="Restart", command=on_restart_button_click)
     restart_button.grid(row=3, column=0, pady=10)
 
@@ -127,6 +131,7 @@ def create_board():
     )
     revert_button.grid(row=3, column=2, pady=5)
 
+    # Create labels to display the scores for Player X, Player O, and draws
     global x_wins, o_wins, draws
 
     x_wins = tk.Label(root, text=f"X wins: {x_score}")
@@ -138,6 +143,7 @@ def create_board():
     draws = tk.Label(root, text=f"Draws: {draws_score}")
     draws.grid(row=4, column=1)
 
+    # Update the scores display after creating the board
     score_check("")
 
 # Function to destroy the opponent choice widgets
@@ -149,13 +155,17 @@ def destroy_opponent_choice_widgets(widgets):
 def how_to_play(widgets, button_list):
     global button_num
     button_num = 0  # Reset the button click count
+    
+    # Set the window size and title for the instructions screen
     root.geometry("500x150")
     root.title("How to play")
 
+    # Destroy the opponent choice widgets and the game board buttons to display the instructions
     destroy_opponent_choice_widgets(widgets)
     for button in button_list:
         button.destroy()
 
+    # Create a label to display the instructions for how to play the game
     instructions = tk.Label(
         root,
         text=(
@@ -168,6 +178,7 @@ def how_to_play(widgets, button_list):
     )
     instructions.pack(pady=10)
 
+    # Create a Back button to return to the opponent choice screen after viewing the instructions
     back_button = ttk.Button(
         root,
         text="Back",
@@ -190,15 +201,18 @@ def on_restart_button_click():
 def on_opponent_button_click(opponent_type, widgets):
     print(f"Selected opponent: {opponent_type}")
 
+    # Set the global opponent variable based on the selected opponent type
     if opponent_type == "Bot":
         global opponent
         opponent = "Bot"
     elif opponent_type == "Player":
         opponent = "Player"
 
+    # Set the window size and title for the game board
     root.title("Noughts and Crosses")
     root.geometry("270x370")
 
+    # Remove the opponent choice widgets and create the game board
     destroy_opponent_choice_widgets(widgets)
     create_board()
 
@@ -206,12 +220,15 @@ def on_opponent_button_click(opponent_type, widgets):
 def opponent_choice():
     global opponent_type
 
+    # Set the window size and title for the opponent choice screen
     root.geometry("250x100")
     root.title("Choose opponent")
 
+    # Create a label to prompt the user to choose their opponent before playing the game
     warning_text = ttk.Label(root, text="Please choose your opponent before playing:")
     warning_text.pack(pady=5)
 
+    # Create buttons for the user to choose between playing against the bot or another player
     bot_button = ttk.Button(
         root,
         text="Player vs Bot",
@@ -286,7 +303,8 @@ def score_check(result):
 
 # Function to check for a win or a draw
 def win_check():
-    global win_combinations
+    global win_combinations  # Declare the global variable win_combinations to be used in this function
+    # Check each winning combination to see if there is a winner
     for combination in win_combinations:
         a, b, c = combination
 
@@ -311,6 +329,7 @@ def win_check():
             reset_game(winner)
             return
 
+    # Check for a draw if all buttons are filled and there is no winner
     if all(button["text"] != "" for row in buttons for button in row):
         reset_game("Draw")
 
