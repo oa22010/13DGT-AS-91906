@@ -109,11 +109,16 @@
     o_score = 0  # Reset Player O's score
     draws_score = 0  # Reset the draw score
 
-**Test Type:** x  
+**Test Type:** Expected  
 **Input:**  
-x
 
-**Expected Outcome:** x  
-**Actual Result:** x  
-**Pass or Fail:** x  
-**Debugging:**  
+    if empty_buttons:  # Check if there are any empty buttons left
+        if empty_buttons_dict.get((0, column)) == "X" and empty_buttons_dict.get((1, column)) == "X" and empty_buttons_dict.get((2, column)) == "":
+            row, column = (2, column)
+        elif empty_buttons_dict.get((row, 0)) == "X" and empty_buttons_dict.get((row, 1)) == "X" and empty_buttons_dict.get((row, 2)) == "":
+            row, column = (row, 2)
+
+**Expected Outcome:** Bot blocks player  
+**Actual Result:** Bot does random moves  
+**Pass or Fail:** Fail  
+**Debugging:** See previous test case  
